@@ -1,0 +1,12 @@
+.app-card {
+  background: #ffffff;
+}
+
+.app-card.hover-effect {
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+.app-card.hover-effect:hover {
+  transform: scale(1.05);
+}

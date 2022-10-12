@@ -1,0 +1,16 @@
+@use '@angular/material' as mat;
+@use 'palette' as custom;
+
+@include mat.core();
+
+$my-primary: mat.define-palette(custom.$altamira-primary-palette, 500);
+$my-accent: mat.define-palette(mat.$pink-palette, 200, 100, 400); // erau cu A200, A100, A400
+
+$my-theme: mat.define-light-theme((
+        color: (
+                primary: $my-primary,
+                accent: $my-accent,
+        )
+));
+
+@include mat.all-component-themes($my-theme);

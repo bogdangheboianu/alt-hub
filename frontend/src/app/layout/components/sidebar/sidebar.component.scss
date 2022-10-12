@@ -1,0 +1,35 @@
+mat-sidenav-content {
+  max-width: 87vw;
+}
+
+.sidenav-container {
+  position: absolute;
+  top: 40px;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+}
+
+.sidenav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 201px;
+  background: #fff;
+  height: 100%;
+  padding-top: 7px;
+}
+
+:host ::ng-deep {
+  .mat-list-base .mat-list-item.mat-list-item-with-avatar, .mat-list-base .mat-list-option.mat-list-item-with-avatar {
+    height: 45px;
+  }
+
+  .mat-drawer-side {
+    border-right: none;
+  }
+
+  .mat-drawer-content {
+    background: #f6f6f6 !important;
+  }
+}

@@ -1,0 +1,7 @@
+<mat-button-toggle-group name="week-days" aria-label="Week days" multiple>
+  <ng-container *ngFor="let dayName of weekDays; let day = index">
+    <mat-button-toggle [value]="day"
+                       [checked]="isDaySelected(day)"
+                       (change)="toggleWeekDay($event)">{{ dayName }}</mat-button-toggle>
+  </ng-container>
+</mat-button-toggle-group>

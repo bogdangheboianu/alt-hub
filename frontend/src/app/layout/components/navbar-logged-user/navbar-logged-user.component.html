@@ -1,0 +1,20 @@
+<div class="d-flex align-items-center justify-content-around navbar-logged-user"
+     *ngIf="(loggedUser$ | async) as loggedUser"
+     [matMenuTriggerFor]="userMenu"
+     (click)="openDropdownMenu()">
+  <div style="margin-right: 0.3rem">
+    <app-user-icon [user]="loggedUser"></app-user-icon>
+  </div>
+  <p class="m-0 p-0" style="font-size: 13px; color: #5b5b5b">{{ loggedUser | userFullName }}</p>
+  <mat-icon>{{ expandIcon }}</mat-icon>
+</div>
+<mat-menu #userMenu="matMenu" (closed)="onDropdownMenuClosed()">
+  <button mat-menu-item (click)="goToLoggedUserPage()" style="font-size: 13px; color: #5b5b5b">
+    <mat-icon>account_box</mat-icon>
+    <span>Profile</span>
+  </button>
+  <button mat-menu-item (click)="logout()" style="font-size: 13px; color: #5b5b5b">
+    <mat-icon>logout</mat-icon>
+    <span>Sign out</span>
+  </button>
+</mat-menu>

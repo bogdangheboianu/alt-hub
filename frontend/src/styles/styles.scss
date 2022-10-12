@@ -1,0 +1,45 @@
+@import "material-override";
+@import "custom";
+
+$primary: #5E3BFF;
+$secondary: #355ECC;
+$tertiary: #B035CC;
+$primary-gradient: linear-gradient(90deg, rgba(176, 53, 204, 1) 0%, rgba(94, 59, 255, 1) 40%, rgba(98, 185, 246, 1) 100%);
+
+
+$text-100: #2f2C36;
+$text-90: #373440;
+$text-80: #4D4959;
+$text-70: #645E73;
+$text-60: #7A738C;
+
+$green: #00BD97;
+
+
+html, body {
+  height: 100%;
+  background-color: #f6f6f6 !important;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: #f6f6f6 !important;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+input {
+  opacity: 1;
+}
+
+

@@ -1,0 +1,1 @@
+export const ENV_CONFIG_FILE_NAME = 'ENV_CONFIG_FILE_NAME';

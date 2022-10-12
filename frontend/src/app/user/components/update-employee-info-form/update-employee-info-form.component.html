@@ -1,0 +1,28 @@
+<form *ngIf="form" [formGroup]="form">
+  <app-text-input label="Employee ID"
+                  formControlName="employeeId"
+                  [disabled]="true"
+                  [viewMode]="viewModeActive"
+                  [required]="true"></app-text-input>
+  <app-select-input label="Company position"
+                    formControlName="companyPositionId"
+                    [viewMode]="viewModeActive"
+                    [options]="(companyPositionsOptions$ | async)!"
+                    [required]="true"
+                    (inputViewClick)="deactivateViewMode(true)"></app-select-input>
+  <app-date-input label="Hire date"
+                  formControlName="hiredOn"
+                  [viewMode]="viewModeActive"
+                  [required]="true"
+                  (inputViewClick)="deactivateViewMode(true)"></app-date-input>
+  <div class="w-100 row m-0 p-0">
+    <div class="col-4 p-0">
+      <app-cancel-button *ngIf="!viewModeActive" variant="stroked" (onClick)="cancelEdit()"></app-cancel-button>
+    </div>
+    <div class="col-8 p-0">
+      <app-save-button *ngIf="form.touched && form.dirty"
+                       [fullWidth]="true"
+                       (onClick)="submit()"></app-save-button>
+    </div>
+  </div>
+</form>

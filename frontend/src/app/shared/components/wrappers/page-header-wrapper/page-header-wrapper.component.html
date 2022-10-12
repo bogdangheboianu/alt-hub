@@ -1,0 +1,12 @@
+<div class="mb-3">
+  <app-card [height]="height">
+    <div class="d-flex align-items-center justify-content-between w-100">
+      <section>
+        <ng-content select="[pageHeaderLeft]"></ng-content>
+      </section>
+      <section>
+        <ng-content select="[pageHeaderRight]"></ng-content>
+      </section>
+    </div>
+  </app-card>
+</div>

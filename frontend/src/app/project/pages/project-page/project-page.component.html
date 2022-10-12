@@ -1,0 +1,38 @@
+<div *ngIf="(project$ | async) as project">
+  <div class="row">
+    <section class="col-6">
+      <app-page-header-wrapper height="110px">
+        <div pageHeaderLeft>
+          <app-page-title [title]="project | projectName">
+            <div pageTitleLeft>
+              <app-resource-icon [name]="project | projectName" size="large"></app-resource-icon>
+            </div>
+            <app-project-status-label pageTitleRight [status]="project.timeline.status"></app-project-status-label>
+            <div customSubtitle *ngIf="project.info.client">
+              <div class="flex align-items-center justify-content-start">
+                <span class="fw-light">Beneficiary:</span>
+                <app-link-button [text]="project | projectClientName"
+                                 (onClick)="goToClientPage(project.info.client)"></app-link-button>
+              </div>
+            </div>
+          </app-page-title>
+        </div>
+        <div pageHeaderRight>
+          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu"></mat-menu>
+        </div>
+      </app-page-header-wrapper>
+    </section>
+    <section class="col-6">
+      <app-card height="110px">
+        <app-project-timeline [projectId]="project.id"
+                              [timeline]="project.timeline"></app-project-timeline>
+      </app-card>
+    </section>
+  </div>
+  <app-card>
+
+  </app-card>
+</div>

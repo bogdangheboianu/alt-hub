@@ -1,0 +1,16 @@
+<app-list-page-wrapper pageTitle="Employees" titleIcon="group">
+  <div listPageHeaderButtons>
+    <app-add-button resourceName="employee" (onClick)="openCreateUserDialog()"></app-add-button>
+  </div>
+  <mat-tab-group mat-stretch-tabs (selectedTabChange)="onTabChange($event)">
+    <mat-tab [label]="ACTIVE_USERS_TAB_LABEL">
+      <app-users-table></app-users-table>
+    </mat-tab>
+    <mat-tab [label]="ONBOARDING_USERS_TAB_LABEL">
+      <app-users-table [showStatus]="true"></app-users-table>
+    </mat-tab>
+    <mat-tab [label]="INACTIVE_USERS_TAB_LABEL">
+      <app-users-table></app-users-table>
+    </mat-tab>
+  </mat-tab-group>
+</app-list-page-wrapper>

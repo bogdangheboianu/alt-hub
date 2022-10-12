@@ -1,0 +1,58 @@
+<div [ngSwitch]="variant" class="w-100">
+  <button *ngSwitchCase="'basic'"
+          mat-button
+          class="d-flex align-items-center justify-content-center"
+          [color]="color"
+          [disabled]="disabled"
+          [class.w-100]="fullWidth"
+          (click)="onClick.emit()">
+    <mat-icon *ngIf="icon && iconPosition === 'before'">{{ icon }}</mat-icon>
+    <span class="mx-1">{{ text }}</span>
+    <mat-icon *ngIf="icon && iconPosition === 'after'">{{ icon }}</mat-icon>
+  </button>
+  <button *ngSwitchCase="'raised'"
+          mat-raised-button
+          class="d-flex align-items-center justify-content-center"
+          [color]="color"
+          [disabled]="disabled"
+          [class.w-100]="fullWidth"
+          [routerLink]="routerLink"
+          (click)="onClick.emit()">
+    <mat-icon *ngIf="icon && iconPosition === 'before'">{{ icon }}</mat-icon>
+    <span class="mx-1">{{ text }}</span>
+    <mat-icon *ngIf="icon && iconPosition === 'after'">{{ icon }}</mat-icon>
+  </button>
+  <button *ngSwitchCase="'flat'"
+          mat-flat-button
+          class="d-flex align-items-center justify-content-center"
+          [color]="color"
+          [disabled]="disabled"
+          [class.w-100]="fullWidth"
+          [routerLink]="routerLink"
+          (click)="onClick.emit()">
+    <mat-icon *ngIf="icon && iconPosition === 'before'">{{ icon }}</mat-icon>
+    <span class="mx-1">{{ text }}</span>
+    <mat-icon *ngIf="icon && iconPosition === 'after'">{{ icon }}</mat-icon>
+  </button>
+  <button *ngSwitchCase="'stroked'"
+          mat-stroked-button
+          class="d-flex align-items-center justify-content-center"
+          [color]="color"
+          [disabled]="disabled"
+          [class.w-100]="fullWidth"
+          [routerLink]="routerLink"
+          (click)="onClick.emit()">
+    <mat-icon *ngIf="icon && iconPosition === 'before'">{{ icon }}</mat-icon>
+    <span class="mx-1">{{ text }}</span>
+    <mat-icon *ngIf="icon && iconPosition === 'after'">{{ icon }}</mat-icon>
+  </button>
+  <button *ngSwitchCase="'icon'"
+          mat-icon-button
+          [color]="color"
+          [disabled]="disabled"
+          [class.w-100]="fullWidth"
+          [routerLink]="routerLink"
+          (click)="onClick.emit()">
+    <mat-icon>{{ icon }}</mat-icon>
+  </button>
+</div>

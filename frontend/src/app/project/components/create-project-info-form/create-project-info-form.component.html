@@ -1,0 +1,11 @@
+<form *ngIf="form" [formGroup]="form">
+  <app-text-input [required]="true"
+                  formControlName="name"
+                  label="Name"></app-text-input>
+  <app-select-input [options]="clientOptions"
+                    [required]="true"
+                    formControlName="clientId"
+                    label="Beneficiary"></app-select-input>
+  <app-textarea-input formControlName="description"
+                      label="Description"></app-textarea-input>
+</form>

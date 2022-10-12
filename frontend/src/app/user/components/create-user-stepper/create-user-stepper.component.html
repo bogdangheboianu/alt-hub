@@ -1,0 +1,46 @@
+<app-form-dialog-wrapper [showActionButtons]="false" title="Add new employee">
+  <mat-stepper #stepper
+               linear
+               orientation="horizontal"
+               (selectionChange)="onStepChanged($event)">
+
+    <mat-step #userAccountStep
+              [completed]="false"
+              [label]="stepLabel('userAccount')"
+              [editable]="stepIsEditable('userAccount')"
+              [hasError]="stepHasError('userAccount')"
+              [errorMessage]="stepErrorMessage('userAccount')">
+      <app-create-user-account-step (onNextStep)="nextStep()"></app-create-user-account-step>
+    </mat-step>
+
+    <mat-step #userPersonalInfoStep
+              [completed]="false"
+              [label]="stepLabel('userPersonalInfo')"
+              [editable]="stepIsEditable('userPersonalInfo')"
+              [hasError]="stepHasError('userPersonalInfo')"
+              [errorMessage]="stepErrorMessage('userPersonalInfo')">
+      <app-create-user-personal-info-step (onPreviousStep)="previousStep()"
+                                          (onNextStep)="nextStep()"></app-create-user-personal-info-step>
+    </mat-step>
+
+    <mat-step #userEmployeeInfoStep
+              [completed]="false"
+              [label]="stepLabel('userEmployeeInfo')"
+              [editable]="stepIsEditable('userEmployeeInfo')"
+              [hasError]="stepHasError('userEmployeeInfo')"
+              [errorMessage]="stepErrorMessage('userEmployeeInfo')">
+      <app-create-user-employee-info-step (onPreviousStep)="previousStep()"
+                                          (onNextStep)="nextStep()"></app-create-user-employee-info-step>
+    </mat-step>
+
+    <mat-step #userSaveStep
+              [completed]="false"
+              [label]="stepLabel('userSave')"
+              [editable]="stepIsEditable('userSave')">
+      <app-create-user-save-step [nextStepDisabled]="(submitButtonDisabled$ | async)!"
+                                 (onPreviousStep)="previousStep()"
+                                 (onNextStep)="submit()"></app-create-user-save-step>
+    </mat-step>
+
+  </mat-stepper>
+</app-form-dialog-wrapper>

@@ -1,0 +1,11 @@
+<form *ngIf="form" [formGroup]="form">
+  <app-email-input label="Email"
+                   formControlName="email"
+                   [required]="true"></app-email-input>
+  <app-password-input label="Create password"
+                      formControlName="password"
+                      [required]="true"></app-password-input>
+  <app-checkbox-input label="Admin account"
+                      formControlName="isAdmin"
+                      [required]="true"></app-checkbox-input>
+</form>

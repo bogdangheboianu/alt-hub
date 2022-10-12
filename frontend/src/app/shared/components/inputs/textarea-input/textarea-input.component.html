@@ -1,0 +1,24 @@
+<mat-form-field appearance="outline" *ngIf="!viewMode; else inputView">
+  <mat-label>{{ label }}</mat-label>
+  <textarea matInput
+            [(ngModel)]="value"
+            [disabled]="disabled"
+            [required]="required"
+            [class.disabled]="disabled"
+            [errorStateMatcher]="errorStateMatcher"
+            (input)="onChange($any($event.target).value)"
+            (blur)="onTouched()"></textarea>
+  <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
+  <mat-error *ngIf="errors.length > 0">
+    <ul class="error-list">
+      <li *ngFor="let error of errors">{{ error }}</li>
+    </ul>
+  </mat-error>
+</mat-form-field>
+<ng-template #inputView>
+  <div class="d-flex flex-column align-items-start justify-content-start input-view"
+       (click)="inputViewClicked()">
+    <span class="input-view-label">{{ label }}</span>
+    <span>{{ displayValue }}</span>
+  </div>
+</ng-template>

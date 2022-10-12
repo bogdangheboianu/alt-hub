@@ -1,0 +1,7 @@
+<app-list-page-wrapper pageTitle="Projects" titleIcon="assignment">
+  <div *ifAdmin listPageHeaderButtons class="d-flex align-items-center justify-content-end">
+    <app-add-button resourceName="project"
+                    (onClick)="openCreateProjectDialog()"></app-add-button>
+  </div>
+  <app-projects-table></app-projects-table>
+</app-list-page-wrapper>

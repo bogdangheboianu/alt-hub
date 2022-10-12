@@ -1,0 +1,11 @@
+<div class="d-flex flex-column align-items-center justify-content-center" style="margin-top: 20px">
+  <h2>Save project</h2>
+  <ng-container *ngIf="(submitData$ | async) as createProjectData">
+    <h3>{{ createProjectData.info.name }}</h3>
+  </ng-container>
+</div>
+<app-stepper-buttons [previousButtonDisabled]="previousStepDisabled"
+                     [nextButtonDisabled]="nextStepDisabled"
+                     [nextButtonLabel]="nextButtonLabel"
+                     (onPreviousButtonClick)="previousStep()"
+                     (onNextButtonClick)="nextStep()"></app-stepper-buttons>

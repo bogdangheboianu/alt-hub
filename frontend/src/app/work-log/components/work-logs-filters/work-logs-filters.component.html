@@ -1,0 +1,67 @@
+<app-card>
+  <div class="d-flex align-items-center justify-content-between w-100 mb-3">
+    <h5 class="mat-subheading-2 m-0 p-0">Filters</h5>
+    <app-link-button *ngIf="hasFiltersApplied"
+                     text="Clear all"
+                     icon="highlight_off"
+                     (onClick)="clearAllFilters()"></app-link-button>
+  </div>
+  <div class="row">
+    <div class="col-3">
+      <mat-form-field appearance="outline">
+        <mat-label>From</mat-label>
+        <input matInput
+               [(ngModel)]="filters.fromDate"
+               [matDatepicker]="fromDatePicker"
+               (dateChange)="onFromDateFilterChanged($any($event.target).value)">
+        <mat-datepicker-toggle matSuffix [for]="fromDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #fromDatePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="col-3">
+      <mat-form-field appearance="outline">
+        <mat-label>To</mat-label>
+        <input matInput
+               [(ngModel)]="filters.toDate"
+               [matDatepicker]="toDatePicker"
+               (dateChange)="onToDateFilterChanged($any($event.target).value)">
+        <mat-datepicker-toggle matSuffix [for]="toDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #toDatePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <form class="col-3">
+      <mat-form-field appearance="outline">
+        <mat-label>Employee</mat-label>
+        <input matInput
+               type="text"
+               placeholder="Type employee name..."
+               [formControl]="userControl"
+               [matAutocomplete]="userAutocomplete">
+        <mat-autocomplete #userAutocomplete="matAutocomplete"
+                          autoActiveFirstOption
+                          [displayWith]="displayUserFn"
+                          (optionSelected)="onUserOptionSelected($event)">
+          <mat-option *ngFor="let option of filteredUserOptions$ | async"
+                      [value]="option">{{ displayUserFn(option) }}</mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+    <form class="col-3">
+      <mat-form-field appearance="outline">
+        <mat-label>Project</mat-label>
+        <input matInput
+               type="text"
+               placeholder="Type project name..."
+               [formControl]="projectControl"
+               [matAutocomplete]="projectAutocomplete">
+        <mat-autocomplete #projectAutocomplete="matAutocomplete"
+                          autoActiveFirstOption
+                          [displayWith]="displayProjectFn"
+                          (optionSelected)="onProjectOptionSelected($event)">
+          <mat-option *ngFor="let option of filteredProjectOptions$ | async"
+                      [value]="option">{{ displayProjectFn(option) }}</mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+  </div>
+</app-card>

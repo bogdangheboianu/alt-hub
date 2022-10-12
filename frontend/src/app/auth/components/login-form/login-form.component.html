@@ -1,0 +1,10 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <app-text-input formControlName="emailOrUsername"
+                  label="Email or username"
+                  [required]="true"></app-text-input>
+  <app-password-input formControlName="password"
+                      label="Password"
+                      [required]="true"></app-password-input>
+  <app-auth-button class="submit-btn"
+                   text="Login"></app-auth-button>
+</form>

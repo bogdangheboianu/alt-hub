@@ -1,0 +1,7 @@
+<div class="d-flex align-items-center justify-content-between">
+  <app-page-title [title]="title" [icon]="icon"></app-page-title>
+  <div class="d-flex align-items-center justify-content-end">
+    <ng-content select="[listTabHeaderButtons]"></ng-content>
+  </div>
+</div>
+<ng-content></ng-content>

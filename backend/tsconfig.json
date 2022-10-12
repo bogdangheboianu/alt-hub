@@ -1,0 +1,60 @@
+{
+  "compilerOptions" : {
+    "skipLibCheck" : true,
+    "strictBindCallApply" : false,
+    "forceConsistentCasingInFileNames" : false,
+    "noFallthroughCasesInSwitch" : false,
+    "strict" : true,
+    "module" : "commonjs",
+    "declaration" : true,
+    "removeComments" : true,
+    "emitDecoratorMetadata" : true,
+    "experimentalDecorators" : true,
+    "allowSyntheticDefaultImports" : true,
+    "target" : "es2017",
+    "sourceMap" : true,
+    "outDir" : "./dist",
+    "baseUrl" : "./src",
+    "incremental" : true,
+    "esModuleInterop" : true,
+    "resolveJsonModule" : true,
+    "strictNullChecks" : true,
+    "noImplicitReturns" : true,
+    "noImplicitAny" : true,
+    "paths" : {
+      "@shared/*" : [
+        "shared/*"
+      ],
+      "@configuration/*" : [
+        "configuration/*"
+      ],
+      "@users/*" : [
+        "users/*"
+      ],
+      "@company/*" : [
+        "company/*"
+      ],
+      "@employees/*" : [
+        "employees/*"
+      ],
+      "@security/*" : [
+        "security/*"
+      ],
+      "@email/*" : [
+        "email/*"
+      ],
+      "@projects/*" : [
+        "projects/*"
+      ],
+      "@clients/*" : [
+        "clients/*"
+      ],
+      "@work-logs/*" : [
+        "work-logs/*"
+      ],
+      "@search/*" : [
+        "search/*"
+      ]
+    }
+  }
+}

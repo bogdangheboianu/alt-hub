@@ -1,0 +1,6 @@
+<app-button color="accent"
+            style="width: 100%"
+            [text]="text"
+            [variant]="disabled ? 'basic' : 'flat'"
+            [disabled]="disabled"
+            (onClick)="onClick.emit()"></app-button>

@@ -1,0 +1,9 @@
+<form *ngIf="form" [formGroup]="form">
+  <app-select-input label="Company position"
+                    formControlName="companyPositionId"
+                    [options]="(companyPositionsOptions$ | async)!"
+                    [required]="true"></app-select-input>
+  <app-date-input label="Hire date"
+                  formControlName="hiredOn"
+                  [required]="true"></app-date-input>
+</form>

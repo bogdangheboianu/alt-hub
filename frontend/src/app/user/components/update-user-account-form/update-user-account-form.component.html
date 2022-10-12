@@ -1,0 +1,14 @@
+<form *ngIf="form" [formGroup]="form">
+  <app-text-input [required]="true"
+                  [viewMode]="viewModeActive"
+                  formControlName="username"
+                  label="Username"></app-text-input>
+  <app-date-input [required]="true"
+                  [viewMode]="viewModeActive"
+                  formControlName="lastLoginAt"
+                  label="Last login"></app-date-input>
+  <app-checkbox-input [required]="true"
+                      [viewMode]="viewModeActive"
+                      formControlName="isAdmin"
+                      label="Admin account"></app-checkbox-input>
+</form>

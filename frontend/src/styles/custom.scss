@@ -1,0 +1,28 @@
+input.disabled {
+  opacity: 0.5;
+}
+
+.mat-card.clickable-card {
+  transition: all .2s ease-in-out;
+  cursor: pointer;
+}
+
+.mat-card.clickable-card:hover {
+  transform: scale(1.03);
+}
+
+ul.error-list {
+  margin: 0;
+  padding: 0;
+}
+
+.input-view {
+  margin-bottom: 10px;
+}
+
+.input-view-label {
+  font-size: 11px;
+  color: #5b5b5b;
+}
+
+

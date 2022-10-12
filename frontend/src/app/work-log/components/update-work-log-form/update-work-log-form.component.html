@@ -1,0 +1,19 @@
+<app-form-dialog-wrapper title="Update work log"
+                         (onCancelBtnClick)="close()"
+                         (onSaveBtnClick)="submit()">
+  <form *ngIf="form" [formGroup]="form">
+    <app-select-input label="Project"
+                      formControlName="projectId"
+                      [options]="projectOptions"
+                      [required]="true"></app-select-input>
+    <app-time-worked-input label="Time worked"
+                           formControlName="minutesLogged"
+                           [required]="true"></app-time-worked-input>
+    <app-date-input label="Date"
+                    formControlName="date"
+                    [maxDate]="maxWorkLogDate"
+                    [required]="true"></app-date-input>
+    <app-textarea-input label="Description"
+                        formControlName="description"></app-textarea-input>
+  </form>
+</app-form-dialog-wrapper>

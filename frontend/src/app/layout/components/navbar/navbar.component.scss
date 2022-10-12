@@ -1,0 +1,29 @@
+.app-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  background: #fff;
+  padding: 0;
+  z-index: 3;
+}
+
+.logo {
+  width: 200px;
+  font-weight: bolder;
+  letter-spacing: 2px;
+  font-family: 'Ubuntu', sans-serif;
+  cursor: pointer;
+  background: #3F51B5;
+  background: linear-gradient(to right, #3F51B5 8%, #FF4081 73%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.logo:hover {
+  background: #FF4081;
+  background: linear-gradient(to right, #FF4081 8%, #3F51B5 73%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

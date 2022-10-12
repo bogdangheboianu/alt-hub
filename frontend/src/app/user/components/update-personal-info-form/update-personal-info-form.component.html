@@ -1,0 +1,43 @@
+<form *ngIf="form" [formGroup]="form">
+  <app-text-input label="First name"
+                  formControlName="firstName"
+                  [viewMode]="viewModeActive"
+                  [required]="true"
+                  (inputViewClick)="deactivateViewMode(true)"></app-text-input>
+  <app-text-input label="Last name"
+                  formControlName="lastName"
+                  [viewMode]="viewModeActive"
+                  [required]="true"
+                  (inputViewClick)="deactivateViewMode(true)"></app-text-input>
+  <app-date-input label="Date of birth"
+                  formControlName="dateOfBirth"
+                  [viewMode]="viewModeActive"
+                  [required]="true"
+                  (inputViewClick)="deactivateViewMode(true)"></app-date-input>
+  <app-text-input label="CNP"
+                  formControlName="ssn"
+                  [viewMode]="viewModeActive"
+                  [required]="true"
+                  (inputViewClick)="deactivateViewMode(true)"></app-text-input>
+  <app-text-input label="Address"
+                  formControlName="address"
+                  [viewMode]="viewModeActive"
+                  [required]="true"
+                  (inputViewClick)="deactivateViewMode(true)"></app-text-input>
+  <app-text-input label="Phone number"
+                  formControlName="phone"
+                  [viewMode]="viewModeActive"
+                  [required]="true"
+                  (inputViewClick)="deactivateViewMode()"></app-text-input>
+  <div class="w-100 row m-0 p-0">
+    <div class="col-4 p-0">
+      <app-cancel-button *ngIf="!viewModeActive" variant="stroked" (onClick)="cancelEdit()"></app-cancel-button>
+    </div>
+    <div class="col-8 p-0">
+      <app-save-button *ngIf="form.touched && form.dirty"
+                       [fullWidth]="true"
+                       [disabled]="form.invalid"
+                       (onClick)="submit()"></app-save-button>
+    </div>
+  </div>
+</form>

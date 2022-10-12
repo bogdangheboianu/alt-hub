@@ -1,0 +1,89 @@
+$dark-primary-text: rgba(black, 0.87);
+$dark-secondary-text: rgba(black, 0.54);
+$dark-disabled-text: rgba(black, 0.38);
+$dark-dividers: rgba(black, 0.12);
+$dark-focused: rgba(black, 0.12);
+$light-primary-text: white;
+$light-secondary-text: rgba(white, 0.7);
+$light-disabled-text: rgba(white, 0.5);
+$light-dividers: rgba(white, 0.12);
+$light-focused: rgba(white, 0.12);
+
+$altamira-primary-palette: (
+        50: #ECE7FF,
+        100: #CFC4FF,
+        200: #AF9DFF,
+        300: #8E76FF,
+        400: #7658FF,
+        500: #5E3BFF,
+        600: #5635FF,
+        700: #4C2DFF,
+        800: #4226FF,
+        900: #3119FF,
+        contrast: (
+                50: $dark-primary-text,
+                100: $dark-primary-text,
+                200: $dark-primary-text,
+                300: $light-primary-text,
+                400: $light-primary-text,
+                500: $light-primary-text,
+                600: $light-primary-text,
+                700: $light-primary-text,
+                800: $light-primary-text,
+                900: $light-primary-text,
+                A100: $dark-primary-text,
+                A200: $light-primary-text,
+                A400: $light-primary-text,
+                A700: $light-primary-text,
+        )
+);
+
+$altamira-accent-palette: (
+        50: #e7ecf9,
+        100: #c2cff0,
+        200: #9aafe6,
+        300: #728edb,
+        400: #5376d4,
+        500: #355ecc,
+        600: #3056c7,
+        700: #284cc0,
+        800: #2242b9,
+        900: #1631ad,
+        contrast: (
+                50: $dark-primary-text,
+                100: $dark-primary-text,
+                200: $dark-primary-text,
+                300: $light-primary-text,
+                400: $light-primary-text,
+                500: $light-primary-text,
+                600: $light-primary-text,
+                700: $light-primary-text,
+                800: $light-primary-text,
+                900: $light-primary-text,
+        )
+);
+
+$altamira-accent-palette-alt: (
+        50: #f6e7f9,
+        100: #e7c2f0,
+        200: #d89ae6,
+        300: #c872db,
+        400: #bc53d4,
+        500: #b035cc,
+        600: #a930c7,
+        700: #a028c0,
+        800: #9722b9,
+        900: #8716ad,
+        contrast: (
+                50: $dark-primary-text,
+                100: $dark-primary-text,
+                200: $dark-primary-text,
+                300: $light-primary-text,
+                400: $light-primary-text,
+                500: $light-primary-text,
+                600: $light-primary-text,
+                700: $light-primary-text,
+                800: $light-primary-text,
+                900: $light-primary-text,
+        )
+)

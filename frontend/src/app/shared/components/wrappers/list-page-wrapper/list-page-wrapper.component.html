@@ -1,0 +1,16 @@
+<app-page-header-wrapper>
+  <div pageHeaderLeft>
+    <app-page-title [title]="pageTitle" [icon]="titleIcon"></app-page-title>
+  </div>
+  <div pageHeaderRight>
+    <div class="d-flex align-items-center justify-content-end">
+      <ng-content select="[listPageHeaderButtons]"></ng-content>
+    </div>
+  </div>
+</app-page-header-wrapper>
+<div class="mb-3">
+  <ng-content select="[subHeader]"></ng-content>
+</div>
+<app-card>
+  <ng-content></ng-content>
+</app-card>

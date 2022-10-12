@@ -1,0 +1,9 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+  <app-password-input formControlName="password1"
+                      label="Set password"
+                      [required]="true"></app-password-input>
+  <app-password-input formControlName="password2"
+                      label="Confirm password"
+                      [required]="true"></app-password-input>
+  <app-auth-button text="Confirm account"></app-auth-button>
+</form>

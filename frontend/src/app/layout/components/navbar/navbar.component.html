@@ -1,0 +1,15 @@
+<mat-toolbar class="app-navbar shadow-sm">
+  <div class="w-100 h-100">
+    <div class="d-flex align-items-center justify-content-between h-100">
+      <div class="d-flex align-items-center justify-content-start h-100">
+        <h1 class="m-0 p-0 text-center logo" [routerLink]="dashboardLink">Altamira Hub</h1>
+        <div style="margin-left: 15px">
+          <app-search-all></app-search-all>
+        </div>
+      </div>
+      <div class="d-flex align-items-center justify-content-end h-100 px-2">
+        <app-navbar-logged-user></app-navbar-logged-user>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>

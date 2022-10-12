@@ -1,0 +1,24 @@
+<app-form-dialog-wrapper title="Log work"
+                         (onCancelBtnClick)="close()"
+                         (onSaveBtnClick)="submit()">
+  <form *ngIf="form" [formGroup]="form">
+    <app-select-input label="Project"
+                      formControlName="projectId"
+                      [options]="projectOptions"
+                      [required]="true"></app-select-input>
+    <app-time-worked-input label="Time worked"
+                           formControlName="minutesLogged"
+                           [required]="true"></app-time-worked-input>
+    <app-date-input label="Date"
+                    formControlName="date"
+                    [maxDate]="maxWorkLogDate"
+                    [required]="true"></app-date-input>
+    <app-textarea-input label="Description"
+                        formControlName="description"></app-textarea-input>
+    <mat-checkbox style="margin-bottom: 20px"
+                  [checked]="(createRecurrence | async)!"
+                  (change)="createRecurrenceCheckboxChange($event)">Repeat
+    </mat-checkbox>
+    <app-week-day-select formControlName="weekDaysRecurrence" *ngIf="(createRecurrence | async)!"></app-week-day-select>
+  </form>
+</app-form-dialog-wrapper>

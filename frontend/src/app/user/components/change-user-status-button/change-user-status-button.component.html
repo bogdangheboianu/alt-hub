@@ -1,0 +1,7 @@
+<app-button variant="raised"
+            color="accent"
+            style="width: 100%"
+            [disabled]="(isDisabled | async)! || (userStatusUpdateIsLoading | async)!"
+            [text]="(text | async)!"
+            [fullWidth]="true"
+            (onClick)="onClick.emit()"></app-button>

@@ -1,0 +1,14 @@
+<mat-checkbox *ngIf="!viewMode; else inputView"
+              [(ngModel)]="value"
+              [checked]="value"
+              [required]="required"
+              [disabled]="disabled"
+              labelPosition="after"
+              (change)="onChange($event.checked)">{{ label }}</mat-checkbox>
+<ng-template #inputView>
+  <div class="d-flex flex-column align-items-start justify-content-start input-view"
+       (click)="inputViewClicked()">
+    <span class="input-view-label">{{ label }}</span>
+    <span>{{ displayValue }}</span>
+  </div>
+</ng-template>

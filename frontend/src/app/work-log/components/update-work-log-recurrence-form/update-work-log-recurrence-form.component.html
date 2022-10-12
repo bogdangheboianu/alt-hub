@@ -1,0 +1,11 @@
+<app-form-dialog-wrapper *ngIf="data.workLogRecurrence"
+                         [title]="'Update recurrent work log for project ' + data.workLogRecurrence.project.info.name"
+                         (onCancelBtnClick)="close()"
+                         (onSaveBtnClick)="submit()">
+  <form *ngIf="form" [formGroup]="form">
+    <app-time-worked-input label="Time worked"
+                           formControlName="minutesLogged"
+                           [required]="true"></app-time-worked-input>
+    <app-week-day-select formControlName="weekDays"></app-week-day-select>
+  </form>
+</app-form-dialog-wrapper>

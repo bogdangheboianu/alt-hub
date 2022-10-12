@@ -1,0 +1,20 @@
+<form *ngIf="form" [formGroup]="form">
+  <app-text-input label="First name"
+                  formControlName="firstName"
+                  [required]="true"></app-text-input>
+  <app-text-input label="Last name"
+                  formControlName="lastName"
+                  [required]="true"></app-text-input>
+  <app-date-input label="Date of birth"
+                  formControlName="dateOfBirth"
+                  [required]="true"></app-date-input>
+  <app-text-input label="CNP"
+                  formControlName="ssn"
+                  [required]="true"></app-text-input>
+  <app-text-input label="Address"
+                  formControlName="address"
+                  [required]="true"></app-text-input>
+  <app-text-input label="Phone number"
+                  formControlName="phone"
+                  [required]="true"></app-text-input>
+</form>

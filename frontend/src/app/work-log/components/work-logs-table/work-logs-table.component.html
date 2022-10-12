@@ -1,0 +1,58 @@
+<table mat-table [dataSource]="(dataSource$ | async)!" class="darker-header">
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef> Date</th>
+    <td mat-cell *matCellDef="let workLog">
+      <div class="flex align-items-center justify-content-start">
+        <span style="margin-right: 5px">{{ workLog['date'] | readableDate }}</span>
+        <mat-icon *ngIf="workLog['recurrence']"
+                  class="recurrence-icon"
+                  matTooltip="Recurrent"
+                  matTooltipPosition="right">repeat_on
+        </mat-icon>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="minutesLogged">
+    <th mat-header-cell *matHeaderCellDef> Time worked</th>
+    <td mat-cell *matCellDef="let workLog"> {{ workLog['minutesLogged'] | minutesToReadableTime }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="project">
+    <th mat-header-cell *matHeaderCellDef> Project</th>
+    <td mat-cell *matCellDef="let workLog">
+      <app-link-button [text]="workLog['project'] | projectName"
+                       (onClick)="goToProjectPage(workLog['project'])"></app-link-button>
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="showUser" matColumnDef="employee">
+    <th mat-header-cell *matHeaderCellDef> Employee</th>
+    <td mat-cell *matCellDef="let workLog">
+      <app-link-button [text]="workLog['user'] | userFullName"
+                       (onClick)="goToUserPage(workLog['user'])"></app-link-button>
+    </td>
+  </ng-container>
+
+  <ng-container *ngIf="updateEnabled" matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let workLog" class="text-end">
+      <div class="d-flex align-items-center justify-content-end">
+        <app-edit-icon-button></app-edit-icon-button>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="columns"></tr>
+  <tr mat-row *matRowDef="let workLog; columns: columns;" (click)="openUpdateWorkLogDialog(workLog)"></tr>
+
+</table>
+
+<mat-paginator *ngIf="(pagination$ | async) as pagination"
+               [length]="pagination.totalRecords"
+               [pageSizeOptions]="pageSizeOptions"
+               (page)="onPage($event)"
+               showFirstLastButtons
+               aria-label="Select page of work logs">
+</mat-paginator>

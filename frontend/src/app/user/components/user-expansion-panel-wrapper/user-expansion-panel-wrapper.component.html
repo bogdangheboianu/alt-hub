@@ -1,0 +1,19 @@
+<article class="mb-3">
+  <app-card>
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="expanded"
+                           (opened)="opened.emit()"
+                           (closed)="closed.emit()">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <h3 class="mat-subheader m-0 p-0 fw-bold" style="color: rgb(91, 91, 91)">
+              <mat-icon color="primary">{{ icon }}</mat-icon>
+              <span style="margin-left: 6px !important;">{{ title }}</span>
+            </h3>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ng-content></ng-content>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </app-card>
+</article>

@@ -1,0 +1,7 @@
+<div class="d-flex align-items-center justify-content-between">
+  <app-prev-button [disabled]="previousButtonDisabled"
+                   (onClick)="previousButtonClicked()"></app-prev-button>
+  <app-next-button [text]="nextButtonLabel"
+                   [disabled]="nextButtonDisabled"
+                   (onClick)="nextButtonClicked()"></app-next-button>
+</div>

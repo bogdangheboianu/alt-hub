@@ -1,0 +1,12 @@
+<mat-card class="shadow user-card"
+          [class.no-click]="!isClickable"
+          (click)="cardClicked()">
+  <img mat-card-image
+       style="object-fit: cover"
+       width="300"
+       height="250"
+       src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+       alt="user-profile-picture">
+  <mat-card-title>{{ user | userFullName }}</mat-card-title>
+  <mat-card-subtitle *ngIf="isClickable">{{ user | userCompanyPosition }}</mat-card-subtitle>
+</mat-card>

@@ -1,0 +1,52 @@
+@use "~styles/styles.scss" as styles;
+
+.login-card {
+  width: 50%;
+  max-width: 500px;
+  height: 440px;
+  margin: 0 auto;
+  padding: 0;
+  position: relative;
+  top: 128px;
+}
+
+.login-header {
+  background: styles.$primary-gradient;
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  display: block;
+  height: 40px;
+}
+
+.form-container {
+  padding: 32px;
+  text-align: center;
+}
+
+.login-text {
+  padding-bottom: 32px;
+  font-weight: 700;
+  font-size: 32px;
+}
+
+@media only screen and (max-width: 600px) {
+  .login-text {
+    padding: 32px 32px 64px 32px;
+    font-weight: 600;
+    font-size: 32px;
+  }
+  .login-card {
+    width: 100%;
+    max-width: 800px;
+    height: 100vh;
+    position: relative;
+    top: 0;
+    margin: 0 auto;
+    padding: 0;
+  }
+}

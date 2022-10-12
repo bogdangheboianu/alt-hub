@@ -1,0 +1,28 @@
+.link-button {
+  padding: 0 !important;
+  text-align: left !important;
+  transition: none !important;
+}
+
+.link-button:hover {
+  text-decoration: underline !important;
+}
+
+.link-button.disabled:hover {
+  text-decoration: none !important;
+  cursor: not-allowed !important;
+}
+
+:host ::ng-deep {
+  .mat-button:hover:not(.mat-button-disabled) .mat-button-focus-overlay,
+  .mat-button:focus:not(.mat-button-disabled) .mat-button-focus-overlay {
+    opacity: 1 !important;
+    background: none !important;
+    text-decoration: underline !important;
+    transition: none !important;
+  }
+
+  .mat-button-focus-overlay {
+    transition: none !important;
+  }
+}

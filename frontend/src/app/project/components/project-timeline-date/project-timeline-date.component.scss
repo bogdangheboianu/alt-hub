@@ -1,0 +1,52 @@
+:host {
+  width: 100%;
+}
+
+.project-timeline-date-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  margin: 0;
+  border-radius: 5px;
+  width: 100%;
+  height: 80px;
+  background: #cedaff;
+  color: #3F51B5;
+  cursor: pointer;
+}
+
+.project-timeline-date-container.no-date {
+  background: none;
+  color: #3F51B5;
+  border: 0.1px #3F51B5 solid;
+}
+
+.day-text {
+  font-weight: bold;
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+.month-text {
+  font-size: 20px;
+}
+
+.formatted-type-text {
+  font-size: 10px;
+  margin-bottom: 3px;
+}
+
+.add-icon {
+  font-size: 30px;
+  height: 30px;
+  width: 30px;
+}
+
+.no-date-text {
+  font-size: 10px;
+  font-style: italic;
+  text-align: center;
+  line-height: 10px;
+}

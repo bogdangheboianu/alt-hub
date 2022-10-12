@@ -1,0 +1,61 @@
+.mat-form-field {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+
+button.mat-raised-button,
+button.mat-stroked-button,
+button.mat-flat-button,
+button.mat-button,
+button.mat-button-toggle-button,
+span.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: 30px !important;
+  padding: 0 10px !important;
+}
+
+.mat-button-toggle-appearance-standard .mat-button-toggle-label-content {
+  line-height: 30px !important;
+  padding: 0 !important;
+}
+
+.mat-row .mat-cell {
+  border-bottom: 1px solid transparent;
+  border-top: 1px solid transparent;
+  cursor: pointer;
+}
+
+.mat-row:hover .mat-cell {
+  background: #fafafa;
+}
+
+.mat-snack-bar-container.success {
+  background: #d1f8ef;
+  color: #00bd97;
+  opacity: 1;
+  padding: 16px;
+}
+
+.mat-snack-bar-container.error {
+  background: #ffe5e2;
+  color: #f44336;
+  opacity: 1;
+  padding: 16px;
+}
+
+.mat-h1, .mat-headline, .mat-typography .mat-h1, .mat-typography .mat-headline, .mat-typography h1 {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+table.mat-table.darker-header > thead > .mat-header-row {
+  background: #f4f4f4 !important;
+}
+
+table.mat-table > tbody > .mat-row.warn {
+  background: rgba(244, 67, 54, 0.2);
+}
+
+.mat-icon {
+  width: auto !important;
+}

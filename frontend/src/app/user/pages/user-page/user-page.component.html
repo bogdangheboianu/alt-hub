@@ -1,0 +1,67 @@
+<div *ngIf="(user$ | async) as user">
+  <app-page-header-wrapper>
+    <div pageHeaderLeft>
+      <app-page-title [title]="user | userFullName" [subtitle]="user | userCompanyPosition">
+        <div pageTitleLeft>
+          <app-user-icon [user]="user" size="large"></app-user-icon>
+        </div>
+        <app-user-status-label pageTitleRight [status]="user.status"></app-user-status-label>
+      </app-page-title>
+    </div>
+    <div pageHeaderRight>
+
+    </div>
+  </app-page-header-wrapper>
+  <app-user-status-steps *ngIf="(user | hasAccess | async) && showUserStatusSteps(user)" [user]="user"></app-user-status-steps>
+  <main class="row">
+    <section class="col-4" style="max-height: 77vh; overflow-y: auto">
+      <app-user-expansion-panel title="Personal info"
+                                icon="face"
+                                [expanded]="userPanelExpandedStates.personalInfo"
+                                (opened)="panelOpened('personalInfo')"
+                                (closed)="panelClosed('personalInfo')">
+        <app-update-personal-info-form [initialValues]="user.personalInfo" [userId]="user.id"></app-update-personal-info-form>
+      </app-user-expansion-panel>
+      <app-user-expansion-panel title="Employee info"
+                                icon="badge"
+                                [expanded]="userPanelExpandedStates.employeeInfo"
+                                (opened)="panelOpened('employeeInfo')"
+                                (closed)="panelClosed('employeeInfo')">
+        <app-update-employee-info-form [initialValues]="user.employeeInfo" [userId]="user.id"></app-update-employee-info-form>
+      </app-user-expansion-panel>
+      <app-user-expansion-panel title="Account info"
+                                icon="account_box"
+                                [expanded]="userPanelExpandedStates.accountInfo"
+                                (opened)="panelOpened('accountInfo')"
+                                (closed)="panelClosed('accountInfo')">
+        <app-update-user-account-form [initialValues]="user"></app-update-user-account-form>
+      </app-user-expansion-panel>
+    </section>
+    <section class="col-8">
+      <app-card>
+        <mat-tab-group mat-stretch-tabs>
+          <mat-tab label="Work logs" *ngIf="userIsActive(user)">
+            <div class="py-3 d-flex align-items-center justify-content-between">
+              <div class="d-flex align-items-center justify-content-start" *ngIf="user | hasAccess | async">
+                <app-log-work-button (onClick)="openCreateWorkLogDialog(user)"></app-log-work-button>
+                <app-recurrent-work-log-button class="mx-2" (onClick)="openCreateWorkLogRecurrenceDialog(user)"></app-recurrent-work-log-button>
+              </div>
+              <mat-button-toggle-group [(ngModel)]="visibleWorkLogTable">
+                <mat-button-toggle value="workLogs">Logged work</mat-button-toggle>
+                <mat-button-toggle value="workLogRecurrences">Recurrences</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
+            <ng-container [ngSwitch]="visibleWorkLogTable">
+              <app-work-logs-table *ngSwitchCase="'workLogs'"
+                                   [showUser]="false"
+                                   (onPageChange)="onWorkLogsPageChange($event)"></app-work-logs-table>
+              <app-work-log-recurrences-table *ngSwitchCase="'workLogRecurrences'"
+                                              [showUser]="false"></app-work-log-recurrences-table>
+            </ng-container>
+          </mat-tab>
+          <mat-tab label="Documents"></mat-tab>
+        </mat-tab-group>
+      </app-card>
+    </section>
+  </main>
+</div>

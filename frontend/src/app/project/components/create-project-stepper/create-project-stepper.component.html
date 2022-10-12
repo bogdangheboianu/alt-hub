@@ -1,0 +1,38 @@
+<app-form-dialog-wrapper title="Add new project" [showActionButtons]="false">
+  <mat-stepper orientation="horizontal"
+               #stepper
+               linear
+               (selectionChange)="onStepChanged($event)">
+
+    <mat-step #projectInfoStep
+              [completed]="false"
+              [label]="stepLabel('projectInfo')"
+              [editable]="stepIsEditable('projectInfo')"
+              [hasError]="stepHasError('projectInfo')"
+              [errorMessage]="stepErrorMessage('projectInfo')">
+      <app-create-project-info-step (onNextStep)="nextStep()"></app-create-project-info-step>
+    </mat-step>
+
+    <mat-step #projectTimelineStep
+              [completed]="false"
+              [label]="stepLabel('projectTimeline')"
+              [editable]="stepIsEditable('projectTimeline')"
+              [optional]="stepIsOptional('projectTimeline')"
+              [hasError]="stepHasError('projectTimeline')"
+              [errorMessage]="stepErrorMessage('projectTimeline')">
+      <app-create-project-timeline-step (onPreviousStep)="previousStep()"
+                                        (onNextStep)="nextStep()"></app-create-project-timeline-step>
+    </mat-step>
+
+    <mat-step #projectSaveStep
+              [completed]="false"
+              [label]="stepLabel('projectSave')"
+              [editable]="stepIsEditable('projectSave')">
+      <app-create-project-save-step [nextStepDisabled]="(submitButtonDisabled$ | async)!"
+                                    (onPreviousStep)="previousStep()"
+                                    (onNextStep)="submit()"></app-create-project-save-step>
+    </mat-step>
+
+  </mat-stepper>
+</app-form-dialog-wrapper>
+

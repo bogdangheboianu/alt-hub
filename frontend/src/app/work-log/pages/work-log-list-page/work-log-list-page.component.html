@@ -1,0 +1,11 @@
+<app-list-page-wrapper pageTitle="Work logs" titleIcon="add_task">
+  <div listPageHeaderButtons>
+    <app-download-button text="Download CSV"
+                         (onClick)="handleWorkLogsCsvExport()"></app-download-button>
+  </div>
+  <app-work-logs-filters subHeader
+                         (onFiltersChange)="onWorkLogsFiltersChange($event)"></app-work-logs-filters>
+  <app-work-logs-table [showUser]="true"
+                       [updateEnabled]="false"
+                       (onPageChange)="onWorkLogsPageChange($event)"></app-work-logs-table>
+</app-list-page-wrapper>

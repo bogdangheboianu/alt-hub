@@ -1,0 +1,14 @@
+<app-form-dialog-wrapper title="Setup recurrent work log"
+                         (onCancelBtnClick)="close()"
+                         (onSaveBtnClick)="submit()">
+  <form *ngIf="form" [formGroup]="form">
+    <app-select-input label="Project"
+                      formControlName="projectId"
+                      [options]="projectOptions"
+                      [required]="true"></app-select-input>
+    <app-time-worked-input label="Time worked"
+                           formControlName="minutesLogged"
+                           [required]="true"></app-time-worked-input>
+    <app-week-day-select formControlName="weekDays"></app-week-day-select>
+  </form>
+</app-form-dialog-wrapper>

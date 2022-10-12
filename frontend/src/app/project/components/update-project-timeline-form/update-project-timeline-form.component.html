@@ -1,0 +1,9 @@
+<app-form-dialog-wrapper title="Update project timeline"
+                         (onCancelBtnClick)="close()"
+                         (onSaveBtnClick)="submit()">
+  <form *ngIf="form" [formGroup]="form">
+    <app-date-input label="Start date" formControlName="startDate"></app-date-input>
+    <app-date-input label="End date" formControlName="endDate"></app-date-input>
+    <app-date-input label="Deadline" formControlName="deadline"></app-date-input>
+  </form>
+</app-form-dialog-wrapper>

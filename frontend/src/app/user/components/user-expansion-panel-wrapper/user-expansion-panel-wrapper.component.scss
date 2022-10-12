@@ -1,0 +1,20 @@
+.mat-expansion-panel:not([class*=mat-elevation-z]) {
+  box-shadow: none;
+}
+
+.mat-accordion .mat-expansion-panel:last-of-type {
+  border: none
+}
+
+.mat-expansion-panel-header {
+  padding: 0 5px;
+  height: auto;
+}
+
+.mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]), .mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]), .mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]) {
+  background: none;
+}
+
+:host ::ng-deep .mat-expansion-panel-body {
+  padding: 20px 0 0 0 !important;
+}

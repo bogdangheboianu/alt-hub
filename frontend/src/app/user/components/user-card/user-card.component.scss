@@ -1,0 +1,17 @@
+.user-card {
+  width: 300px;
+  transition: transform .2s ease;
+  cursor: pointer;
+}
+
+.user-card:hover {
+  transform: scale(1.02);
+}
+
+.user-card.no-click {
+  cursor: initial;
+}
+
+.user-card.no-click:hover {
+  transform: none;
+}

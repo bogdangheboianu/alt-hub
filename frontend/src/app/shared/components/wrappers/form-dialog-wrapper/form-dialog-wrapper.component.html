@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>{{ title }}</h1>
+<div mat-dialog-content>
+  <ng-content></ng-content>
+</div>
+<div mat-dialog-actions
+     *ngIf="showActionButtons"
+     class="d-flex align-items-center justify-content-end">
+  <app-cancel-button (onClick)="onCancelBtnClick.emit()" style="margin-right: 10px"></app-cancel-button>
+  <app-save-button (onClick)="onSaveBtnClick.emit()"></app-save-button>
+</div>

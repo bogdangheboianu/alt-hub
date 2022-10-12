@@ -1,0 +1,8 @@
+<button mat-button
+        color="primary"
+        class="link-button"
+        [class.disabled]="disabled$ | async"
+        (click)="clicked()">
+  <mat-icon *ngIf="icon">{{ icon }}</mat-icon>
+  <span class="mx-1">{{ text }}</span>
+</button>

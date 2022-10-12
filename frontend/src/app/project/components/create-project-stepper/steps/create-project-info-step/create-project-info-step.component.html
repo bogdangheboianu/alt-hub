@@ -1,0 +1,10 @@
+<div class="d-flex align-items-center justify-content-center"
+     style="margin-top: 20px">
+  <app-create-project-info-form class="w-50"
+                                [initialValues]="(submitData$ | async)!"></app-create-project-info-form>
+</div>
+<app-stepper-buttons [previousButtonDisabled]="previousStepDisabled"
+                     [nextButtonDisabled]="nextStepDisabled"
+                     [nextButtonLabel]="nextButtonLabel"
+                     (onPreviousButtonClick)="previousStep()"
+                     (onNextButtonClick)="nextStep()"></app-stepper-buttons>

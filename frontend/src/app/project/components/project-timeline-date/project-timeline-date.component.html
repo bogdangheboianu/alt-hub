@@ -1,0 +1,19 @@
+<div *ngIf="date; else noDate"
+     class="project-timeline-date-container"
+     matTooltip="Click to edit"
+     matTooltipPosition="below"
+     (click)="handleClick()">
+  <span class="formatted-type-text">{{ formattedType }}</span>
+  <span class="day-text">{{ day }}</span>
+  <span class="month-text">{{ month }}</span>
+  <!--  <span class="year-text">{{ year }}</span>-->
+</div>
+<ng-template #noDate>
+  <div class="project-timeline-date-container no-date"
+       matTooltip="Click to set"
+       matTooltipPosition="below"
+       (click)="handleClick()">
+    <mat-icon class="add-icon">add</mat-icon>
+    <span class="no-date-text">{{ noDateText }}</span>
+  </div>
+</ng-template>

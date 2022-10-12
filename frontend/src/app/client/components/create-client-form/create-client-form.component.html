@@ -1,0 +1,9 @@
+<app-form-dialog-wrapper title="Add new client"
+                         (onSaveBtnClick)="submit()"
+                         (onCancelBtnClick)="closeDialog()">
+  <form [formGroup]="form">
+    <app-text-input label="Name"
+                    formControlName="name"
+                    [required]="true"></app-text-input>
+  </form>
+</app-form-dialog-wrapper>
