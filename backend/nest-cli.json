@@ -4,7 +4,7 @@
   "sourceRoot" : "src",
   "compilerOptions" : {
     "assets" : [
-      "**/*.hbs"
+      "assets/**/*"
     ],
     "watchAssets" : true,
     "plugins" : [

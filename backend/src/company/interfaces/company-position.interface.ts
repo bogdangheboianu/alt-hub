@@ -1,5 +1,5 @@
-import { CompanyPositionId } from '@company/models/position/company-position-id';
-import { CompanyPositionName } from '@company/models/position/company-position-name';
+import { CompanyPositionId } from '@company/models/company-position-id';
+import { CompanyPositionName } from '@company/models/company-position-name';
 import { Audit } from '@shared/models/audit/audit';
 import { Slug } from '@shared/models/identification/slug';
 

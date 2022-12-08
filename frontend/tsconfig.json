@@ -41,8 +41,8 @@
       "@config/*" : [
         "app/config/*"
       ],
-      "@layout/*" : [
-        "app/layout/*"
+      "@layouts/*" : [
+        "app/layouts/*"
       ],
       "@store/*" : [
         "app/store/*"
@@ -53,23 +53,38 @@
       "@employee/*" : [
         "app/employee/*"
       ],
-      "@user/*" : [
-        "app/user/*"
+      "@users/*" : [
+        "app/users/*"
       ],
-      "@client/*" : [
-        "app/client/*"
+      "@clients/*" : [
+        "app/clients/*"
       ],
-      "@project/*" : [
-        "app/project/*"
+      "@projects/*" : [
+        "app/projects/*"
       ],
-      "@work-log/*" : [
-        "app/work-log/*"
+      "@work-logs/*" : [
+        "app/work-logs/*"
       ],
       "@search/*" : [
         "app/search/*"
       ],
       "@company/*" : [
         "app/company/*"
+      ],
+      "@fiscal/*" : [
+        "app/fiscal/*"
+      ],
+      "@vacations/*" : [
+        "app/vacations/*"
+      ],
+      "@not-found/*" : [
+        "app/not-found/*"
+      ],
+      "@documents/*" : [
+        "app/documents/*"
+      ],
+      "@files/*" : [
+        "app/files/*"
       ]
     }
   },

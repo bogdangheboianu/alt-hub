@@ -1,0 +1,9 @@
+{
+  "allowUnicodeIdentifiers" : true,
+  "supportsES6" : true,
+  "typescriptThreePlus" : true,
+  "modelPropertyNaming" : "original",
+  "enablePostProcessFile" : true,
+  "fileNaming" : "kebab-case",
+  "stringEnums" : true
+}

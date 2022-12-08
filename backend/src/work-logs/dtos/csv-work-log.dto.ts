@@ -3,4 +3,5 @@ export class CsvWorkLogDto {
     projectName!: string;
     hoursLogged!: number;
     userFullName!: string;
+    description!: string | null;
 }

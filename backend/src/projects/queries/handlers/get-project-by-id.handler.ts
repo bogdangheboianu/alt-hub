@@ -45,10 +45,12 @@ export class GetProjectByIdHandler extends BaseQueryHandler<GetProjectByIdQuery,
             return Failed( ...id.errors );
         }
 
-        const project = await this.projectRepository.findProjectById( id.value!,
-                                                                      user.isAdmin
-                                                                      ? undefined
-                                                                      : user.id );
+        const project = await this.projectRepository.findById( id.value!,
+                                                               {
+                                                                   userId: user.account.isAdmin
+                                                                           ? undefined
+                                                                           : user.id
+                                                               } );
 
         if( project.isFailed ) {
             throw new Exception( project.errors );

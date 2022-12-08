@@ -2,6 +2,8 @@ import { Failed, Success } from '@shared/functions/result-builder.functions';
 import { OptionalDate } from '@shared/models/date/optional-date';
 import { Result } from '@shared/models/generics/result';
 import { Interval } from '@shared/models/interval/interval';
+import { PositiveNumber } from '@shared/models/numerical/positive-number';
+import dayjs from 'dayjs';
 
 export class DateOpenInterval extends Interval<Date | null> {
     constructor(from: OptionalDate, to: OptionalDate) {
@@ -14,6 +16,14 @@ export class DateOpenInterval extends Interval<Date | null> {
 
     get to(): OptionalDate {
         return this._to as OptionalDate;
+    }
+
+    get businessDays(): PositiveNumber {
+        const to = dayjs( this.to.getValue() );
+        const from = dayjs( this.from.getValue() );
+        //@ts-ignore
+        const businessDays = to.businessDiff( from ) + 1;
+        return PositiveNumber.create( businessDays, 'workingDays' ).value!;
     }
 
     static empty(): DateOpenInterval {
@@ -71,5 +81,9 @@ export class DateOpenInterval extends Interval<Date | null> {
         ) || (
             toIsInTheFuture && fromIsNotDefined
         );
+    }
+
+    update(from?: Date | null, to?: Date | null, fromPropertyName = 'from', toPropertyName = 'to'): Result<DateOpenInterval> {
+        return DateOpenInterval.create( from, to, fromPropertyName, toPropertyName );
     }
 }

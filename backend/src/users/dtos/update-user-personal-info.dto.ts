@@ -4,6 +4,5 @@ export class UpdateUserPersonalInfoDto {
     dateOfBirth!: Date;
     ssn!: string;
     address!: string;
-    email!: string;
     phone!: string;
 }

@@ -1,7 +1,7 @@
 import { valueIsEmpty } from '@shared/functions/value-is-empty.function';
 import union from 'lodash/union';
 
-export function mergeArray<T>(source: T | T[], add: T | T[]) {
+export function mergeArray<T extends object>(source: T | T[], add: T | T[]) {
     if( Array.isArray( source ) && Array.isArray( add ) ) {
         return union( source, add );
     }

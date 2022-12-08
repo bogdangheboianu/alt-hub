@@ -1,5 +1,5 @@
 import { CompanyPositionDto } from '@company/dtos/company-position.dto';
-import { CompanyPosition } from '@company/models/position/company-position';
+import { CompanyPosition } from '@company/models/company-position';
 import { modelToAuditDto } from '@shared/mappers/audit.mappers';
 
 export const modelToCompanyPositionDto = (model: CompanyPosition): CompanyPositionDto => (

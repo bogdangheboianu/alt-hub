@@ -1,10 +1,12 @@
 import { CommandHandler, EventBus } from '@nestjs/cqrs';
+import { GroupedProjectStatuses } from '@projects/constants/project.constants';
 import { ProjectNotFoundException } from '@projects/exceptions/project.exceptions';
 import { Project } from '@projects/models/project';
 import { ProjectId } from '@projects/models/project-id';
 import { ProjectRepository } from '@projects/repositories/project.repository';
 import { Exception } from '@shared/exceptions/exception';
 import { Failed, Success } from '@shared/functions/result-builder.functions';
+import { valueIsNotEmpty } from '@shared/functions/value-is-not-empty.function';
 import { IException } from '@shared/interfaces/generics/exception.interface';
 import { BaseSyncCommandHandler } from '@shared/models/generics/base-command-handler';
 import { Result } from '@shared/models/generics/result';
@@ -96,11 +98,11 @@ export class UpdateWorkLogHandler extends BaseSyncCommandHandler<UpdateWorkLogCo
             return Failed( ...projectId.errors );
         }
 
-        if( workLog.project.id.equals( projectId.value! ) ) {
+        if( valueIsNotEmpty( workLog.project ) && workLog.project.id.equals( projectId.value! ) ) {
             return Success( workLog.project );
         }
 
-        const project = await this.projectRepository.findOngoingProjectById( projectId.value! );
+        const project = await this.projectRepository.findById( projectId.value!, { statusGroup: GroupedProjectStatuses.active } );
 
         if( project.isFailed ) {
             throw new Exception( project.errors );

@@ -12,7 +12,7 @@ export class CompanyPositionEntity extends BaseEntity {
     @Column( { type: ColTypesEnum.Varchar, unique: true } )
     slug!: string;
 
-    @OneToMany( () => UserEntity, user => user.employeeInfo.companyPosition, { lazy: true } )
+    @OneToMany( () => UserEntity, user => user.employmentInfo.companyPosition, { lazy: true } )
     users?: Promise<UserEntity[]>;
 
     @ManyToOne( () => CompanyEntity, company => company.positions, { lazy: true } )

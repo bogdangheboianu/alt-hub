@@ -1,4 +1,5 @@
 import { CreateClientHandler } from '@clients/commands/handlers/create-client.handler';
+import { DeleteClientHandler } from '@clients/commands/handlers/delete-client.handler';
 import { UpdateClientHandler } from '@clients/commands/handlers/update-client.handler';
 import { ClientController } from '@clients/controllers/client.controller';
 import { ClientEntity } from '@clients/entities/client.entity';
@@ -28,7 +29,8 @@ const Repositories = [
 
 const CommandHandlers = [
     CreateClientHandler,
-    UpdateClientHandler
+    UpdateClientHandler,
+    DeleteClientHandler
 ];
 
 const QueryHandlers = [

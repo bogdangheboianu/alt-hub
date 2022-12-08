@@ -39,3 +39,5 @@ ormconfig.ts
 
 # Env
 local.env
+
+scratch.ts

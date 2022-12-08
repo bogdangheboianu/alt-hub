@@ -1,23 +1,28 @@
-import { AddPositionToCompanyHandler } from '@company/commands/handlers/position/add-position-to-company.handler';
+import { CreateCompanyPositionHandler } from '@company/commands/handlers/create-company-position.handler';
+import { CreateCompanyPricingProfileHandler } from '@company/commands/handlers/create-company-pricing-profile.handler';
 import { CompanyController } from '@company/controllers/company.controller';
+import { CompanyPositionEntity } from '@company/entities/company-position.entity';
+import { CompanyPricingProfileEntity } from '@company/entities/company-pricing-profile.entity';
 import { CompanyEntity } from '@company/entities/company.entity';
-import { GetCompanyHandler } from '@company/queries/handlers/company/get-company.handler';
+import { GetCompanyHandler } from '@company/queries/handlers/get-company.handler';
 import { CompanyPositionRepository } from '@company/repositories/company-position.repository';
+import { CompanyPricingProfileRepository } from '@company/repositories/company-pricing-profile.repository';
 import { CompanyRepository } from '@company/repositories/company.repository';
 import { CompanyService } from '@company/services/company.service';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CompanyPositionEntity } from './entities/company-position.entity';
 
 const Entities = [
     CompanyEntity,
-    CompanyPositionEntity
+    CompanyPositionEntity,
+    CompanyPricingProfileEntity
 ];
 
 const Repositories = [
     CompanyRepository,
-    CompanyPositionRepository
+    CompanyPositionRepository,
+    CompanyPricingProfileRepository
 ];
 
 const Services = [
@@ -29,7 +34,8 @@ const Controllers = [
 ];
 
 const CommandHandlers = [
-    AddPositionToCompanyHandler
+    CreateCompanyPositionHandler,
+    CreateCompanyPricingProfileHandler
 ];
 
 const QueryHandlers = [
@@ -37,7 +43,9 @@ const QueryHandlers = [
 ];
 
 const Exports = [
-    CompanyPositionRepository
+    CompanyRepository,
+    CompanyPositionRepository,
+    CompanyPricingProfileRepository
 ];
 
 @Module( {

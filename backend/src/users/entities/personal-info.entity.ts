@@ -8,11 +8,8 @@ export class PersonalInfoEntity {
     @Column( { type: ColTypesEnum.Varchar, nullable: false } )
     lastName!: string;
 
-    @Column( { type: ColTypesEnum.Date, nullable: false } )
+    @Column( { type: ColTypesEnum.TimestampWithTimezone, nullable: false } )
     dateOfBirth!: Date;
-
-    @Column( { type: ColTypesEnum.Varchar, nullable: false, unique: true } )
-    email!: string;
 
     @Column( { type: ColTypesEnum.Varchar, nullable: false, unique: true } )
     phone!: string;

@@ -1,5 +1,6 @@
 import { Project } from '@projects/models/project';
 import { entityFactory } from '@shared/functions/entity-factory.function';
+import { getWeekDay } from '@shared/functions/get-week-day.function';
 import { Failed, Success } from '@shared/functions/result-builder.functions';
 import { IDomainModel } from '@shared/interfaces/generics/domain-model.interface';
 import { Audit } from '@shared/models/audit/audit';
@@ -102,7 +103,7 @@ export class WorkLogRecurrence implements IDomainModel<WorkLogRecurrence, WorkLo
 
     includesToday(): boolean {
         return this.weekDays.map( wd => wd.getValue() )
-                   .includes( new Date().getDay() );
+                   .includes( getWeekDay( new Date() ) );
     }
 
     equals(to: WorkLogRecurrence): boolean {

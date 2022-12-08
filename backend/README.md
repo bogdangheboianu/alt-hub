@@ -29,71 +29,47 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 ### App configuration
 
-Create `local.env` file with the following configuration
-
-```bash
-#Application
-APP_NAME=altamira_app
-NODE_ENV=local
-
-#Database
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=<your_postgres_user>
-DB_PASSWORD=<your_postgres_password>
-DB_NAME=altamira_app_db
-DB_SCHEMA=public
-DB_SYNC=true
-
-#Migrations
-MIGRATIONS_TABLE=migrations
-
-#Authentication
-JWT_SECRET=<dev_secret_key>
-```
+Create `local.env` file following the configuration variables from `local.example.env`
 
 ### TypeORM configuration
 
-Create `ormconfig.ts` file with the following configuration
+Create `ormconfig.ts` file following the configuration from `ormconfig.example.ts`
 
-```typescript
-const options: DataSourceOptions = {
-    type               : 'postgres',
-    host               : 'localhost',
-    port               : 5432,
-    username           : '<db_username>',
-    password           : '<db_password>',
-    database           : 'altamira_app_db',
-    schema             : 'public',
-    logging            : false,
-    logger             : 'advanced-console',
-    synchronize        : true,
-    dropSchema         : false,
-    extra              : {
-        trustServerCertificate: true
-    },
-    entities           : [ `${ __dirname }/**/*.entity{.ts,.js}` ],
-    migrations         : [ `${ __dirname }/migrations/*{.ts,.js}` ],
-    migrationsTableName: 'migrations',
-    namingStrategy     : new SnakeNamingStrategy()
-};
-
-export default new DataSource( options );
-```
+## Using the application
 
 ### Run application
 
 ```bash
-export NODE_ENV=local && nest start --watch
+yarn run start:dev
 ```
 
-### Run migrations
+### Create empty migration
 
 ```bash
-nest build && node -r tsconfig-paths/register -r ts-node/register node_modules/typeorm/cli.js -d ormconfig.ts migration:run
+NAME=YourMigrationName yarn run migration:create
 ```
 
-### Login with default credentials
+### Generate migration
+
+```bash
+NAME=YourMigrationName yarn run migration:generate
+```
+
+### Apply migrations
+
+```bash
+yarn run migrations:run
+```
+
+### Generate module
+
+To generate a module containing the `NestJS` module and the default application folder structure, run the following command from project root:
+
+```bash
+sh ./generate-module.sh <name-of-your-module>
+```
+
+### Default user credentials
 
 - Username: `admin`
 - Password: `test0000`

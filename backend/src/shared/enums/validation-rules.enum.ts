@@ -37,4 +37,6 @@ export enum ValidationRulesEnum {
     IsEnumList           = 'is_enum_list',
     IsList               = 'is_list',
     IsPassword           = 'is_password',
+    IsUint8Array         = 'is_uint8array',
+    IsBuffer             = 'is_buffer'
 }

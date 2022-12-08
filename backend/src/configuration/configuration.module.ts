@@ -2,6 +2,7 @@ import { ENV_CONFIG_FILE_NAME } from '@configuration/constants/providers.constan
 import { IConfigurationModuleOptions } from '@configuration/interfaces/configuration-module-options.interface';
 import { ConfigurationService } from '@configuration/services/configuration.service';
 import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
+import { DbLoggerService } from './services/db-logger.service';
 
 @Global()
 @Module( {} )
@@ -9,8 +10,8 @@ export class ConfigurationModule {
     static forRootAsync(options: IConfigurationModuleOptions): DynamicModule {
         return {
             module   : ConfigurationModule,
-            providers: [ ConfigurationService, ...this.createProviders( options ) ],
-            exports  : [ ConfigurationService ]
+            providers: [ ConfigurationService, DbLoggerService, ...this.createProviders( options ) ],
+            exports  : [ ConfigurationService, DbLoggerService ]
         };
     }
 

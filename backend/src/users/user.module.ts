@@ -1,13 +1,15 @@
 import { CompanyModule } from '@company/company.module';
+import { FiscalModule } from '@fiscal/fiscal.module';
 import { forwardRef, Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { SecurityModule } from '@security/security.module';
 import { ActivateUserHandler } from '@users/commands/handlers/activate-user.handler';
-import { ConfirmUserHandler } from '@users/commands/handlers/confirm-user.handler';
 import { CreateUserHandler } from '@users/commands/handlers/create-user.handler';
+import { DeactivateUserHandler } from '@users/commands/handlers/deactivate-user.handler';
 import { InviteUserHandler } from '@users/commands/handlers/invite-user.handler';
-import { UpdateUserEmployeeInfoHandler } from '@users/commands/handlers/update-user-employee-info.handler';
+import { ReactivateUserHandler } from '@users/commands/handlers/reactivate-user.handler';
+import { UpdateUserEmploymentInfoHandler } from '@users/commands/handlers/update-user-employment-info.handler';
 import { UpdateUserPersonalInfoHandler } from '@users/commands/handlers/update-user-personal-info.handler';
 import { UserController } from '@users/controllers/user.controller';
 import { UserEntity } from '@users/entities/user.entity';
@@ -36,10 +38,11 @@ const Controllers = [
 const CommandHandlers = [
     CreateUserHandler,
     InviteUserHandler,
-    ConfirmUserHandler,
     ActivateUserHandler,
+    ReactivateUserHandler,
     UpdateUserPersonalInfoHandler,
-    UpdateUserEmployeeInfoHandler
+    UpdateUserEmploymentInfoHandler,
+    DeactivateUserHandler
 ];
 
 const QueryHandlers = [
@@ -61,7 +64,8 @@ const Exports = [
                  TypeOrmModule.forFeature( [ ...Entities ] ),
                  CqrsModule,
                  forwardRef( () => SecurityModule ),
-                 CompanyModule
+                 CompanyModule,
+                 forwardRef( () => FiscalModule )
              ],
              providers  : [
                  ...Repositories,

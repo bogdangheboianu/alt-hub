@@ -1,7 +1,8 @@
 import { IDomainCommand } from '@shared/interfaces/generics/domain-command.interface';
 import { AuthenticatedContext } from '@shared/models/context/authenticated-context';
+import { ActivateUserDto } from '@users/dtos/activate-user.dto';
 
-type CommandDataPayload = { userId: string };
+type CommandDataPayload = ActivateUserDto;
 type CommandData = { context: AuthenticatedContext; payload: CommandDataPayload };
 
 export class ActivateUserCommand implements IDomainCommand<CommandDataPayload> {

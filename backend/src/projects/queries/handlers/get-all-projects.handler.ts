@@ -1,3 +1,4 @@
+import { ClientId } from '@clients/models/value-objects/client-id';
 import { QueryHandler } from '@nestjs/cqrs';
 import { IProjectsSelectionCriteria } from '@projects/interfaces/projects-selection-criteria.interface';
 import { Project } from '@projects/models/project';
@@ -44,7 +45,7 @@ export class GetAllProjectsHandler extends BaseQueryHandler<GetAllProjectsQuery,
             return Failed( ...selectionCriteria.errors );
         }
 
-        const projects = await this.projectRepository.findAllProjects( selectionCriteria.value! );
+        const projects = await this.projectRepository.findAll( selectionCriteria.value! );
 
         if( projects.isFailed ) {
             throw new Exception( projects.errors );
@@ -66,9 +67,14 @@ export class GetAllProjectsHandler extends BaseQueryHandler<GetAllProjectsQuery,
                              : ProjectStatusGroup.create( params.statusGroup )
             },
             {
-                userId: user.isAdmin
+                userId: user.account.isAdmin
                         ? undefined
                         : user.id
+            },
+            {
+                clientId: valueIsEmpty( params.clientId )
+                          ? undefined
+                          : ClientId.create( params.clientId, 'clientId' )
             }
         );
     }

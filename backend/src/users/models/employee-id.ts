@@ -2,6 +2,7 @@ import { Failed, Success } from '@shared/functions/result-builder.functions';
 import { IValueObject } from '@shared/interfaces/generics/value-object.interface';
 import { Result } from '@shared/models/generics/result';
 import { ValidationChain } from '@shared/models/validation/validation-chain';
+import { EMPLOYEE_ID_PREFIX } from '@users/constants/user.constants';
 import { Random } from 'random-js';
 
 export class EmployeeId implements IValueObject<EmployeeId, string> {
@@ -14,7 +15,7 @@ export class EmployeeId implements IValueObject<EmployeeId, string> {
     static generate(): EmployeeId {
         const random = new Random();
         const numericId = random.integer( 10000, 99999 );
-        return new EmployeeId( `ALT${ numericId }` );
+        return new EmployeeId( `${ EMPLOYEE_ID_PREFIX }${ numericId }` );
     }
 
     static create(value: string, propertyName: string = 'employeeId'): Result<EmployeeId> {

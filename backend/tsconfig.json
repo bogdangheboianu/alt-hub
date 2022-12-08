@@ -54,6 +54,18 @@
       ],
       "@search/*" : [
         "search/*"
+      ],
+      "@fiscal/*" : [
+        "fiscal/*"
+      ],
+      "@vacations/*" : [
+        "vacations/*"
+      ],
+      "@documents/*" : [
+        "documents/*"
+      ],
+      "@files/*" : [
+        "files/*"
       ]
     }
   }

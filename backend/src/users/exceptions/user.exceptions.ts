@@ -38,3 +38,8 @@ export class IncompatibleUserStatusException extends BaseException {
         this.message = `Cannot update user status from ${ currentStatus.getValue() } to ${ newStatus.getValue() }`;
     }
 }
+
+export class UserInactiveException extends BaseException {
+    name = 'user_status_inactive';
+    message = `User is inactive`;
+}

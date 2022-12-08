@@ -19,10 +19,6 @@ export class UserStatus implements IValueObject<UserStatus, UserStatusEnum> {
         return new UserStatus( UserStatusEnum.Invited );
     }
 
-    static confirmed(): UserStatus {
-        return new UserStatus( UserStatusEnum.Confirmed );
-    }
-
     static active(): UserStatus {
         return new UserStatus( UserStatusEnum.Active );
     }
@@ -65,8 +61,6 @@ export class UserStatus implements IValueObject<UserStatus, UserStatusEnum> {
             case UserStatusEnum.Created:
                 return [ UserStatus.invited() ];
             case UserStatusEnum.Invited:
-                return [ UserStatus.confirmed() ];
-            case UserStatusEnum.Confirmed:
                 return [ UserStatus.active() ];
             case UserStatusEnum.Active:
                 return [

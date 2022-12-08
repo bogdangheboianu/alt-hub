@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { LoginWithCredentialsCommand } from '@security/commands/impl/auth/login-with-credentials.command';
 import { LoginResponseDto } from '@security/dtos/login-response.dto';
@@ -28,7 +28,7 @@ export class AuthService {
         const result: Result<LoginResponseDto> = await this.commandBus.execute( command );
 
         if( result.isFailed ) {
-            throw new BadRequestException( result.errors );
+            throw new UnauthorizedException( result.errors );
         }
         
         return result.value!;

@@ -7,4 +7,5 @@ export enum ColTypesEnum {
     Bool                  = 'bool',
     Enum                  = 'enum',
     UUID                  = 'uuid',
+    Bytea                 = 'bytea'
 }

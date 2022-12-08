@@ -1,7 +1,9 @@
 import { GroupedProjectStatuses } from '@projects/constants/project.constants';
 import { ProjectStatusEnum } from '@projects/enums/project-status.enum';
 import { Failed, Success } from '@shared/functions/result-builder.functions';
+import { valueIsEmpty } from '@shared/functions/value-is-empty.function';
 import { IValueObject } from '@shared/interfaces/generics/value-object.interface';
+import { DateOpenInterval } from '@shared/models/date/date-open-interval';
 import { Result } from '@shared/models/generics/result';
 import { ValidationChain } from '@shared/models/validation/validation-chain';
 
@@ -66,5 +68,21 @@ export class ProjectStatus implements IValueObject<ProjectStatus, ProjectStatusE
 
     isEnded(): boolean {
         return GroupedProjectStatuses.ended.includes( this.value );
+    }
+
+    static defineStatus(projectPeriod?: DateOpenInterval): ProjectStatus {
+        if( valueIsEmpty( projectPeriod ) || projectPeriod.isEmpty() || projectPeriod.isInTheFuture() ) {
+            return ProjectStatus.draft();
+        }
+
+        if( projectPeriod.isInThePast() ) {
+            return ProjectStatus.completed();
+        }
+
+        if( projectPeriod.isCurrent() ) {
+            return ProjectStatus.inProgress();
+        }
+
+        return ProjectStatus.draft();
     }
 }

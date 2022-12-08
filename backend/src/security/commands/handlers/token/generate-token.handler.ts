@@ -28,7 +28,7 @@ export class GenerateTokenHandler extends BaseSyncCommandHandler<GenerateTokenCo
             return this.failed( command, ...tokenValueUniquenessCheck.errors );
         }
 
-        const token = this.createToken( command );
+        const token = Token.create( command );
 
         if( token.isFailed ) {
             return this.failed( command, ...token.errors );
@@ -76,10 +76,6 @@ export class GenerateTokenHandler extends BaseSyncCommandHandler<GenerateTokenCo
         }
 
         return Failed( new DuplicateTokenValueException() );
-    }
-
-    private createToken(command: GenerateTokenCommand): Result<Token> {
-        return Token.create( command );
     }
 
     private async saveTokenToDb(token: Token): Promise<Token> {

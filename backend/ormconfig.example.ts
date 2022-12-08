@@ -1,7 +1,7 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
-// To generate empty migration, run:  typeorm migration:create ./migrations/<MigrationName>
+// To generate empty migration, run:  typeorm migration:create ./src/migrations/<MigrationName>
 
 const options: DataSourceOptions = {
     type               : 'postgres',
@@ -19,7 +19,7 @@ const options: DataSourceOptions = {
         trustServerCertificate: true
     },
     entities           : [ `${ __dirname }/**/*.entity{.ts,.js}` ],
-    migrations         : [ `${ __dirname }/migrations/*{.ts,.js}` ],
+    migrations         : [ `${ __dirname }/src/migrations/*{.ts,.js}` ],
     migrationsTableName: 'migrations',
     namingStrategy     : new SnakeNamingStrategy()
 };

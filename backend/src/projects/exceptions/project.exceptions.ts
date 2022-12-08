@@ -3,11 +3,7 @@ import { BaseException } from '@shared/models/base-exception/base-exception';
 export class DuplicateProjectNameException extends BaseException {
     name = 'duplicate_project_name';
     message = 'A project with this name already exists';
-
-    constructor() {
-        super( 'name' );
-
-    }
+    field = 'name';
 }
 
 export class ProjectNotFoundException extends BaseException {
@@ -20,12 +16,13 @@ export class InactiveProjectException extends BaseException {
     message = 'The project does not have an active status';
 }
 
-export class NotOngoingProjectException extends BaseException {
-    name = 'not_ongoing_project';
-    message = 'The project does not have an ongoing status';
+export class ProjectMemberNotFoundException extends BaseException {
+    name = 'project_member_not_found';
+    message = 'No project member was found with the given input';
+    field = 'memberId';
 }
 
-export class ForbiddenAccessToProjectException extends BaseException {
-    name = 'forbidden_access_to_project';
-    message = 'Forbidden access to project';
+export class InvalidProjectPricingException extends BaseException {
+    name = 'invalid_project_pricing';
+    message = 'Invalid project pricing';
 }

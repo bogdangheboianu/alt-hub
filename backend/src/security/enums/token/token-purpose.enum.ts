@@ -1,4 +1,4 @@
 export enum TokenPurposeEnum {
-    Authentication      = 'authentication',
-    AccountConfirmation = 'account_confirmation'
+    Authentication    = 'authentication',
+    AccountActivation = 'account_confirmation'
 }

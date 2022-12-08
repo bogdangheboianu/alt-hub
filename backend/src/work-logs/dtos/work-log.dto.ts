@@ -7,7 +7,9 @@ export class WorkLogDto {
     minutesLogged!: number;
     date!: Date;
     description!: string | null;
-    user!: UserDto;
-    project!: ProjectDto;
+    user!: UserDto | null;
+    userFullName!: string;
+    project!: ProjectDto | null;
+    projectName!: string;
     recurrence!: WorkLogRecurrenceDto | null;
 }

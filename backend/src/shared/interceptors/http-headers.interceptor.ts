@@ -17,7 +17,7 @@ export class HttpHeadersInterceptor implements NestInterceptor {
                 message: `Missing '${ CustomHttpHeaders.CorrelationId.header }' header`,
                 field  : null
             };
-            return throwError( new BadRequestException( error ) );
+            return throwError( () => new BadRequestException( error ) );
         } else {
             request.correlationId = headers[CustomHttpHeaders.CorrelationId.property];
         }

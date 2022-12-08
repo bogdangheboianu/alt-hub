@@ -4,15 +4,16 @@ import { AuthenticatedContext } from '@shared/models/context/authenticated-conte
 import { Result } from '@shared/models/generics/result';
 import { ValidationChain } from '@shared/models/validation/validation-chain';
 import { ActivateUserCommand } from '@users/commands/impl/activate-user.command';
-import { ConfirmUserCommand } from '@users/commands/impl/confirm-user.command';
 import { CreateUserCommand } from '@users/commands/impl/create-user.command';
+import { DeactivateUserCommand } from '@users/commands/impl/deactivate-user.command';
 import { InviteUserCommand } from '@users/commands/impl/invite-user.command';
-import { UpdateUserEmployeeInfoCommand } from '@users/commands/impl/update-user-employee-info.command';
+import { ReactivateUserCommand } from '@users/commands/impl/reactivate-user.command';
+import { UpdateUserEmploymentInfoCommand } from '@users/commands/impl/update-user-employment-info.command';
 import { UpdateUserPersonalInfoCommand } from '@users/commands/impl/update-user-personal-info.command';
-import { ConfirmUserDto } from '@users/dtos/confirm-user.dto';
+import { ActivateUserDto } from '@users/dtos/activate-user.dto';
 import { CreateUserDto } from '@users/dtos/create-user.dto';
 import { GetAllUsersParamsDto } from '@users/dtos/get-all-users-params.dto';
-import { UpdateUserEmployeeInfoDto } from '@users/dtos/update-user-employee-info.dto';
+import { UpdateUserEmploymentInfoDto } from '@users/dtos/update-user-employment-info.dto';
 import { UpdateUserPersonalInfoDto } from '@users/dtos/update-user-personal-info.dto';
 import { UserDto } from '@users/dtos/user.dto';
 import { UserStatusEnum } from '@users/enums/user-status.enum';
@@ -31,19 +32,21 @@ export class UserService {
 
     async createUser(context: AuthenticatedContext, data: CreateUserDto): Promise<UserDto> {
         const validation = ValidationChain.validate<any>()
+                                          .isNotEmpty( data.account, 'account' )
+                                          .isNotEmpty( data.account?.email, 'email' )
+                                          .isNotEmpty( data.account?.password, 'password' )
+                                          .isNotEmpty( data.account?.isAdmin, 'isAdmin' )
                                           .isNotEmpty( data.personalInfo, 'personalInfo' )
-                                          .isNotEmpty( data.employeeInfo, 'employeeInfo' )
+                                          .isNotEmpty( data.employmentInfo, 'employeeInfo' )
                                           .isNotEmpty( data.personalInfo?.firstName, 'firstName' )
                                           .isNotEmpty( data.personalInfo?.lastName, 'lastName' )
-                                          .isNotEmpty( data.personalInfo?.email, 'email' )
                                           .isNotEmpty( data.personalInfo?.phone, 'phone' )
                                           .isNotEmpty( data.personalInfo?.ssn, 'ssn' )
                                           .isNotEmpty( data.personalInfo?.address, 'address' )
                                           .isNotEmpty( data.personalInfo?.dateOfBirth, 'dateOfBirth' )
-                                          .isNotEmpty( data.employeeInfo?.companyPositionId, 'companyPositionId' )
-                                          .isNotEmpty( data.employeeInfo?.hiredOn, 'hiredOn' )
-                                          .isNotEmpty( data.password, 'password' )
-                                          .isNotEmpty( data.isAdmin, 'isAdmin' )
+                                          .isNotEmpty( data.employmentInfo?.companyPositionId, 'companyPositionId' )
+                                          .isNotEmpty( data.employmentInfo?.hiredOn, 'hiredOn' )
+                                          .isNotEmpty( data.employmentInfo?.paidLeaveDays, 'paidLeaveDays' )
                                           .getResult();
 
         if( validation.isFailed ) {
@@ -79,7 +82,7 @@ export class UserService {
         return modelToUserDto( result.value! );
     }
 
-    async confirmUser(context: AuthenticatedContext, data: ConfirmUserDto): Promise<void> {
+    async activateUser(context: AuthenticatedContext, data: ActivateUserDto): Promise<void> {
         const validation = ValidationChain.validate<typeof data>()
                                           .isNotEmpty( data.token, 'token' )
                                           .isNotEmpty( data.newPassword, 'newPassword' )
@@ -89,7 +92,7 @@ export class UserService {
             throw new BadRequestException( validation.errors );
         }
 
-        const command = new ConfirmUserCommand( { context, payload: { ...data } } );
+        const command = new ActivateUserCommand( { context, payload: { ...data } } );
         const result: Result<User> = await this.commandBus.execute( command );
 
         if( result.isFailed ) {
@@ -97,16 +100,16 @@ export class UserService {
         }
     }
 
-    async activateUser(context: AuthenticatedContext, userId: string): Promise<UserDto> {
+    async reactivateUser(context: AuthenticatedContext, userId: string): Promise<UserDto> {
         const validation = ValidationChain.validate<any>()
-                                          .isNotEmpty( userId, 'userId' )
+                                          .isUUIDv4( userId, 'userId' )
                                           .getResult();
 
         if( validation.isFailed ) {
             throw new BadRequestException( validation.errors );
         }
 
-        const command = new ActivateUserCommand( { context, payload: { userId } } );
+        const command = new ReactivateUserCommand( { context, payload: { userId } } );
         const result: Result<User> = await this.commandBus.execute( command );
 
         if( result.isFailed ) {
@@ -121,7 +124,6 @@ export class UserService {
                                           .isUUIDv4( userId, 'userId' )
                                           .isNotEmpty( data.firstName, 'firstName' )
                                           .isNotEmpty( data.lastName, 'lastName' )
-                                          .isNotEmpty( data.email, 'email' )
                                           .isNotEmpty( data.phone, 'phone' )
                                           .isNotEmpty( data.ssn, 'ssn' )
                                           .isNotEmpty( data.address, 'address' )
@@ -142,7 +144,7 @@ export class UserService {
         return modelToUserDto( result.value! );
     }
 
-    async updateUserEmployeeInfo(context: AuthenticatedContext, data: UpdateUserEmployeeInfoDto, userId: string): Promise<UserDto> {
+    async updateUserEmploymentInfo(context: AuthenticatedContext, data: UpdateUserEmploymentInfoDto, userId: string): Promise<UserDto> {
         const validation = ValidationChain.validate<any>()
                                           .isUUIDv4( userId, 'userId' )
                                           .isUUIDv4( data.companyPositionId, 'companyPositionId' )
@@ -153,7 +155,7 @@ export class UserService {
             throw new BadRequestException( validation.errors );
         }
 
-        const command = new UpdateUserEmployeeInfoCommand( { context, payload: { ...data, userId } } );
+        const command = new UpdateUserEmploymentInfoCommand( { context, payload: { ...data, userId } } );
         const result: Result<User> = await this.commandBus.execute( command );
 
         if( result.isFailed ) {
@@ -183,7 +185,9 @@ export class UserService {
     }
 
     async getUserById(context: AuthenticatedContext, id: string): Promise<UserDto> {
-        if( context.user.id.getValue() !== id ) {
+        const { user: authenticatedUser } = context;
+
+        if( authenticatedUser.id.getValue() !== id.trim() && !authenticatedUser.account.isAdmin ) {
             throw new ForbiddenException();
         }
 
@@ -197,6 +201,24 @@ export class UserService {
 
         const query = new GetUserByIdQuery( { context, params: { id } } );
         const result: Result<User> = await this.queryBus.execute( query );
+
+        if( result.isFailed ) {
+            throw new BadRequestException( result.errors );
+        }
+
+        return modelToUserDto( result.value! );
+    }
+
+    async deactivateUser(context: AuthenticatedContext, userId: string): Promise<UserDto> {
+        const validation = ValidationChain.validate<any>()
+                                          .isUUIDv4( userId, 'userId' )
+                                          .getResult();
+
+        if( validation.isFailed ) {
+            throw new BadRequestException( validation.errors );
+        }
+        const command = new DeactivateUserCommand( { context, payload: { userId } } );
+        const result: Result<User> = await this.commandBus.execute( command );
 
         if( result.isFailed ) {
             throw new BadRequestException( result.errors );

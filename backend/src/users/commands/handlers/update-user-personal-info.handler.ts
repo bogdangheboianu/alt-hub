@@ -7,7 +7,7 @@ import { Result } from '@shared/models/generics/result';
 import { UpdateUserPersonalInfoCommand } from '@users/commands/impl/update-user-personal-info.command';
 import { FailedToUpdateUserPersonalInfoEvent } from '@users/events/impl/failed-to-update-user-personal-info.event';
 import { UserPersonalInfoUpdatedEvent } from '@users/events/impl/user-personal-info-updated.event';
-import { DuplicateEmailAddressException, DuplicatePhoneNumberException, DuplicateSocialSecurityNumberException, UserNotFoundException } from '@users/exceptions/user.exceptions';
+import { DuplicatePhoneNumberException, DuplicateSocialSecurityNumberException, UserNotFoundException } from '@users/exceptions/user.exceptions';
 import { User } from '@users/models/user';
 import { UserId } from '@users/models/user-id';
 import { UserRepository } from '@users/repositories/user.repository';
@@ -71,7 +71,7 @@ export class UpdateUserPersonalInfoHandler extends BaseSyncCommandHandler<Update
             return Failed( ...id.errors );
         }
 
-        const user = await this.userRepository.findActiveById( id.value! );
+        const user = await this.userRepository.findById( id.value! );
 
         if( user.isFailed ) {
             throw new Exception( user.errors );
@@ -85,17 +85,11 @@ export class UpdateUserPersonalInfoHandler extends BaseSyncCommandHandler<Update
     }
 
     private async makeUniquenessChecks(initialUser: User, updatedUser: User): Promise<Result<any>> {
-        const emailAddressUniquenessCheck = this.checkForEmailAddressUniqueness( initialUser, updatedUser );
         const phoneNumberUniquenessCheck = this.checkForPhoneNumberUniqueness( initialUser, updatedUser );
         const socialSecurityNumberUniquenessCheck = this.checkForSocialSecurityNumberUniqueness( initialUser, updatedUser );
 
-        const emailAddressUniquenessCheckResult = await emailAddressUniquenessCheck;
         const phoneNumberUniquenessCheckResult = await phoneNumberUniquenessCheck;
         const socialSecurityNumberUniquenessCheckResult = await socialSecurityNumberUniquenessCheck;
-
-        if( emailAddressUniquenessCheckResult.isFailed ) {
-            return Failed( ...emailAddressUniquenessCheckResult.errors );
-        }
 
         if( phoneNumberUniquenessCheckResult.isFailed ) {
             return Failed( ...phoneNumberUniquenessCheckResult.errors );
@@ -106,27 +100,6 @@ export class UpdateUserPersonalInfoHandler extends BaseSyncCommandHandler<Update
         }
 
         return Success();
-    }
-
-    private async checkForEmailAddressUniqueness(initialUser: User, updatedUser: User): Promise<Result<any>> {
-        const updatedEmail = updatedUser.personalInfo.email;
-        const emailHasNotChanged = initialUser.personalInfo.email.equals( updatedEmail );
-
-        if( emailHasNotChanged ) {
-            return Success();
-        }
-
-        const user = await this.userRepository.findByEmail( updatedEmail, updatedUser.id );
-
-        if( user.isFailed ) {
-            throw new Exception( user.errors );
-        }
-
-        if( user.isNotFound ) {
-            return Success();
-        }
-
-        return Failed( new DuplicateEmailAddressException() );
     }
 
     private async checkForPhoneNumberUniqueness(initialUser: User, updatedUser: User): Promise<Result<any>> {

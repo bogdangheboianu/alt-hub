@@ -8,7 +8,8 @@ import { AnyDate } from '@shared/types/any-date.type';
 import { ValidationErrorHandler } from '@shared/types/validation-error-handler.type';
 import { isBoolean, isDate, isEmail, isFQDN, isInt, isNumber, isPhoneNumber, isString, isUUID } from 'class-validator';
 import dayjs from 'dayjs';
-import { defaultTo, isArray, isFunction, isNaN, isNil } from 'lodash';
+import { defaultTo, isArray, isBuffer, isFunction, isNaN, isNil } from 'lodash';
+import { isUint8Array } from 'util/types';
 
 export class ValidationChain<T> {
     private _result: Result<any>;
@@ -239,7 +240,7 @@ export class ValidationChain<T> {
         return this.ok();
     }
 
-    hasMaximumLength(value: string, reference: number, propertyName: Partial<keyof T>, isOptional = false, customErr?: IException, cb?: ValidationErrorHandler): ValidationChain<T> {
+    hasMaximumLength(value: string | null | undefined, reference: number, propertyName: Partial<keyof T>, isOptional = false, customErr?: IException, cb?: ValidationErrorHandler): ValidationChain<T> {
         const isEmpty = isNil( value );
 
         if( isEmpty && isOptional ) {
@@ -740,6 +741,34 @@ export class ValidationChain<T> {
 
         if( value!.trim().length < 8 ) {
             return this.fail( propertyName, ValidationRulesEnum.IsPassword, customErr || `${ String( propertyName ) } is not a valid password`, cb );
+        }
+
+        return this.ok();
+    }
+
+    isUint8Array(value: any, propertyName: Partial<keyof T>, isOptional = false, customErr?: IException, cb?: ValidationErrorHandler): ValidationChain<T> {
+        const isEmpty: boolean = valueIsEmpty( value );
+
+        if( isEmpty && isOptional ) {
+            return this.ok();
+        }
+
+        if( isEmpty || !isUint8Array( value ) ) {
+            return this.fail( propertyName, ValidationRulesEnum.IsUint8Array, customErr || `${ String( propertyName ) } is not an Uint8Array`, cb );
+        }
+
+        return this.ok();
+    }
+
+    isBuffer(value: any, propertyName: Partial<keyof T>, isOptional = false, customErr?: IException, cb?: ValidationErrorHandler): ValidationChain<T> {
+        const isEmpty: boolean = valueIsEmpty( value );
+
+        if( isEmpty && isOptional ) {
+            return this.ok();
+        }
+
+        if( isEmpty || !isBuffer( value ) ) {
+            return this.fail( propertyName, ValidationRulesEnum.IsBuffer, customErr || `${ String( propertyName ) } is not a buffer`, cb );
         }
 
         return this.ok();

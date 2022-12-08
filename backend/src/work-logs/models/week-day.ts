@@ -23,6 +23,10 @@ export class WeekDay implements IValueObject<WeekDay, WeekDayEnum> {
         return Success( new WeekDay( value as WeekDayEnum ) );
     }
 
+    update(value: number | WeekDayEnum): Result<WeekDay> {
+        return WeekDay.create( value );
+    }
+
     getValue(): WeekDayEnum {
         return this.value;
     }

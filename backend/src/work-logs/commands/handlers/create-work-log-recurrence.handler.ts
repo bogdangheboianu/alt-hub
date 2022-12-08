@@ -1,4 +1,5 @@
 import { CommandHandler, EventBus } from '@nestjs/cqrs';
+import { GroupedProjectStatuses } from '@projects/constants/project.constants';
 import { ProjectNotFoundException } from '@projects/exceptions/project.exceptions';
 import { Project } from '@projects/models/project';
 import { ProjectId } from '@projects/models/project-id';
@@ -67,7 +68,7 @@ export class CreateWorkLogRecurrenceHandler extends BaseSyncCommandHandler<Creat
             return Failed( ...projectId.errors );
         }
 
-        const project = await this.projectRepository.findOngoingProjectById( projectId.value! );
+        const project = await this.projectRepository.findById( projectId.value!, { statusGroup: GroupedProjectStatuses.active } );
 
         if( project.isFailed ) {
             throw new Exception( project.errors );
@@ -81,6 +82,12 @@ export class CreateWorkLogRecurrenceHandler extends BaseSyncCommandHandler<Creat
     }
 
     private async saveWorkLogRecurrenceToDb(workLogRecurrence: WorkLogRecurrence): Promise<WorkLogRecurrence> {
-        return await this.workLogRecurrenceRepository.save( workLogRecurrence );
+        const savedRecurrence = await this.workLogRecurrenceRepository.save( workLogRecurrence );
+
+        if( savedRecurrence.isFailed ) {
+            throw new Exception( savedRecurrence.errors );
+        }
+
+        return savedRecurrence.value!;
     }
 }

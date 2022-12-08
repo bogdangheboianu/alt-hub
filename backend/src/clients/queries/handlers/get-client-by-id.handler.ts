@@ -43,7 +43,7 @@ export class GetClientByIdHandler extends BaseQueryHandler<GetClientByIdQuery, C
             return Failed( ...id.errors );
         }
 
-        const client = await this.clientRepository.findClientById( id.value! );
+        const client = await this.clientRepository.findById( id.value! );
 
         if( client.isFailed ) {
             throw new Exception( client.errors );

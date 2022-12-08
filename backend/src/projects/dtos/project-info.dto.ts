@@ -5,4 +5,5 @@ export class ProjectInfoDto {
     slug!: string;
     description!: string | null;
     client!: ClientDto | null;
+    clientName!: string | null;
 }

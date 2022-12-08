@@ -1,10 +1,16 @@
 import { ClientModule } from '@clients/client.module';
+import { CompanyModule } from '@company/company.module';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AssignCoordinatorToProjectHandler } from '@projects/commands/handlers/project-members/assign-coordinator-to-project.handler';
-import { AssignUsersToProjectHandler } from '@projects/commands/handlers/project-members/assign-users-to-project.handler';
-import { CreateProjectHandler } from '@projects/commands/handlers/project/create-project.handler';
+import { CreateProjectMemberHandler } from '@projects/commands/handlers/create-project-member.handler';
+import { CreateProjectHandler } from '@projects/commands/handlers/create-project.handler';
+import { DeleteProjectMemberHandler } from '@projects/commands/handlers/delete-project-member.handler';
+import { DeleteProjectHandler } from '@projects/commands/handlers/delete-project.handler';
+import { UpdateProjectInfoHandler } from '@projects/commands/handlers/update-project-info.handler';
+import { UpdateProjectMemberHandler } from '@projects/commands/handlers/update-project-member.handler';
+import { UpdateProjectPricingHandler } from '@projects/commands/handlers/update-project-pricing.handler';
+import { UpdateProjectTimelineHandler } from '@projects/commands/handlers/update-project-timeline.handler';
 import { ProjectController } from '@projects/controllers/project.controller';
 import { ProjectEntity } from '@projects/entities/project.entity';
 import { GetAllProjectsHandler } from '@projects/queries/handlers/get-all-projects.handler';
@@ -23,8 +29,13 @@ const Controllers = [
 
 const CommandHandlers = [
     CreateProjectHandler,
-    AssignUsersToProjectHandler,
-    AssignCoordinatorToProjectHandler
+    CreateProjectMemberHandler,
+    UpdateProjectMemberHandler,
+    DeleteProjectMemberHandler,
+    UpdateProjectInfoHandler,
+    UpdateProjectTimelineHandler,
+    UpdateProjectPricingHandler,
+    DeleteProjectHandler
 ];
 
 const QueryHandlers = [
@@ -49,7 +60,8 @@ const Exports = [
                  TypeOrmModule.forFeature( [ ...Entities ] ),
                  CqrsModule,
                  ClientModule,
-                 UserModule
+                 UserModule,
+                 CompanyModule
              ],
              controllers: [ ...Controllers ],
              providers  : [

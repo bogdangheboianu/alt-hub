@@ -14,7 +14,7 @@ export class WorkLogRecurrenceEntity extends BaseEntity {
     @JoinColumn( { name: 'user_id', referencedColumnName: 'id' } )
     user!: UserEntity;
 
-    @ManyToOne( () => ProjectEntity, { eager: true } )
+    @ManyToOne( () => ProjectEntity, { eager: true, onDelete: 'CASCADE' } )
     @JoinColumn( { name: 'project_id', referencedColumnName: 'id' } )
     project!: ProjectEntity;
 

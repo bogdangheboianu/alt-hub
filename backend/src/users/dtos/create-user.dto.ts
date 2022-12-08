@@ -1,9 +1,9 @@
-import { CreateUserEmployeeInfoDto } from '@users/dtos/create-user-employee-info.dto';
-import { CreateUserPersonalInfoDto } from '@users/dtos/create-user-personal-info.dto';
+import { CreateAccountDto } from '@users/dtos/create-account.dto';
+import { CreateEmploymentInfoDto } from '@users/dtos/create-employment-info.dto';
+import { CreatePersonalInfoDto } from '@users/dtos/create-personal-info.dto';
 
 export class CreateUserDto {
-    personalInfo!: CreateUserPersonalInfoDto;
-    employeeInfo!: CreateUserEmployeeInfoDto;
-    isAdmin!: boolean;
-    password!: string;
+    account!: CreateAccountDto;
+    personalInfo!: CreatePersonalInfoDto;
+    employmentInfo!: CreateEmploymentInfoDto;
 }

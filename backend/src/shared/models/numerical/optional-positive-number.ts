@@ -43,4 +43,12 @@ export class OptionalPositiveNumber implements IValueObject<OptionalPositiveNumb
     equals(to: OptionalPositiveNumber): boolean {
         return this.value === to.getValue();
     }
+
+    isSet(): boolean {
+        return this.value !== null;
+    }
+
+    update(value: number | null | undefined, propertyName: string): Result<OptionalPositiveNumber> {
+        return OptionalPositiveNumber.create( value, propertyName );
+    }
 }

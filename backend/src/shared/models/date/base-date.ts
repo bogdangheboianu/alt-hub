@@ -1,3 +1,5 @@
+import { datesAreEqual } from '@shared/functions/dates-are-equal.function';
+import { valueIsEmpty } from '@shared/functions/value-is-empty.function';
 import { valueIsNotEmpty } from '@shared/functions/value-is-not-empty.function';
 import { IntervalPoint } from '@shared/interfaces/interval/interval-point.interface';
 import dayjs, { ManipulateType } from 'dayjs';
@@ -11,9 +13,18 @@ export abstract class BaseDate<T extends IntervalPoint<Date | null>> {
 
     abstract add(value: number | null, unit: ManipulateType): BaseDate<T>;
 
-    equals(to: T): boolean {
-        return dayjs( this._value )
-            .isSame( to.getValue() );
+    equals(to: T, ignoreTime = false): boolean {
+        if( valueIsEmpty( this._value ) && valueIsEmpty( to.getValue() ) ) {
+            return true;
+        }
+
+        if( valueIsEmpty( this._value ) || valueIsEmpty( to.getValue() ) ) {
+            return false;
+        }
+
+        return ignoreTime
+               ? datesAreEqual( this._value!, to.getValue()! )
+               : this._value === to.getValue();
     }
 
     isBefore(other: T): boolean {

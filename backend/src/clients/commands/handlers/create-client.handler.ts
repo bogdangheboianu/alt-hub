@@ -3,7 +3,6 @@ import { ClientCreatedEvent } from '@clients/events/impl/client-created.event';
 import { FailedToCreateClientEvent } from '@clients/events/impl/failed-to-create-client.event';
 import { DuplicateClientNameException } from '@clients/exceptions/client.exceptions';
 import { Client } from '@clients/models/domain-models/client';
-import { ClientName } from '@clients/models/value-objects/client-name';
 import { ClientRepository } from '@clients/repositories/client.repository';
 import { CommandHandler, EventBus } from '@nestjs/cqrs';
 import { Exception } from '@shared/exceptions/exception';
@@ -22,16 +21,16 @@ export class CreateClientHandler extends BaseSyncCommandHandler<CreateClientComm
     }
 
     async execute(command: CreateClientCommand): Promise<Result<Client>> {
-        const clientNameUniquenessCheck = await this.checkForClientNameUniqueness( command );
-
-        if( clientNameUniquenessCheck.isFailed ) {
-            return this.failed( command, ...clientNameUniquenessCheck.errors );
-        }
-
-        const client = this.createClient( command );
+        const client = Client.create( command );
 
         if( client.isFailed ) {
             return this.failed( command, ...client.errors );
+        }
+
+        const clientNameUniquenessCheck = await this.checkForClientNameUniqueness( client.value! );
+
+        if( clientNameUniquenessCheck.isFailed ) {
+            return this.failed( command, ...clientNameUniquenessCheck.errors );
         }
 
         const savedClient = await this.saveClientToDb( client.value! );
@@ -57,32 +56,27 @@ export class CreateClientHandler extends BaseSyncCommandHandler<CreateClientComm
         return Failed( ...errors );
     }
 
-    private async checkForClientNameUniqueness(command: CreateClientCommand): Promise<Result<any>> {
-        const { name } = command.data.payload;
-        const clientName = ClientName.create( name );
+    private async checkForClientNameUniqueness(client: Client): Promise<Result<any>> {
+        const existingClient = await this.clientRepository.findByName( client.name );
 
-        if( clientName.isFailed ) {
-            return Failed( ...clientName.errors );
+        if( existingClient.isFailed ) {
+            throw new Exception( existingClient.errors );
         }
 
-        const client = await this.clientRepository.findClientByName( clientName.value! );
-
-        if( client.isFailed ) {
-            throw new Exception( client.errors );
-        }
-
-        if( client.isNotFound ) {
+        if( existingClient.isNotFound ) {
             return Success();
         }
 
         return Failed( new DuplicateClientNameException() );
     }
 
-    private createClient(command: CreateClientCommand): Result<Client> {
-        return Client.create( command );
-    }
-
     private async saveClientToDb(client: Client): Promise<Client> {
-        return await this.clientRepository.saveClient( client );
+        const savedClient = await this.clientRepository.save( client );
+
+        if( savedClient.isFailed ) {
+            throw new Exception( savedClient.errors );
+        }
+
+        return savedClient.value!;
     }
 }

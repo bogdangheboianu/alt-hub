@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { GroupedProjectStatuses } from '@projects/constants/project.constants';
 import { ProjectEntity } from '@projects/entities/project.entity';
+import { ProjectStatusEnum } from '@projects/enums/project-status.enum';
 import { IProjectsSelectionCriteria } from '@projects/interfaces/projects-selection-criteria.interface';
 import { Project } from '@projects/models/project';
 import { ProjectId } from '@projects/models/project-id';
@@ -22,16 +23,37 @@ export class ProjectRepository {
     }
 
     @catchAsyncExceptions()
-    async findAllProjects(selectionCriteria: IProjectsSelectionCriteria): Promise<Result<Project[]>> {
-        const { statusGroup, userId } = selectionCriteria;
+    async findAll(selectionCriteria: IProjectsSelectionCriteria): Promise<Result<Project[]>> {
+        const { statusGroup, userId, clientId } = selectionCriteria;
         let searchConditions: any = {};
 
         if( valueIsNotEmpty( statusGroup ) ) {
-            searchConditions = { ...searchConditions, status: In( GroupedProjectStatuses[statusGroup!.getValue()] ) };
+            searchConditions = {
+                ...searchConditions,
+                timeline: {
+                    status: In( GroupedProjectStatuses[statusGroup!.getValue()] )
+                }
+            };
         }
 
         if( valueIsNotEmpty( userId ) ) {
-            searchConditions = { ...searchConditions, members: { id: userId.getValue() } };
+            searchConditions = {
+                ...searchConditions,
+                members: {
+                    user: { id: userId.getValue() }
+                }
+            };
+        }
+
+        if( valueIsNotEmpty( clientId ) ) {
+            searchConditions = {
+                ...searchConditions,
+                info: {
+                    client: {
+                        id: clientId.getValue()
+                    }
+                }
+            };
         }
 
         const results = await this.repository.find( { where: searchConditions } );
@@ -42,10 +64,12 @@ export class ProjectRepository {
     }
 
     @catchAsyncExceptions()
-    async findProjectByName(name: ProjectName): Promise<Result<Project>> {
+    async findByName(name: ProjectName): Promise<Result<Project>> {
         const result = await this.repository.findOne( {
                                                           where: {
-                                                              name: name.getValue()
+                                                              info: {
+                                                                  name: name.getValue()
+                                                              }
                                                           }
                                                       }
         );
@@ -55,11 +79,26 @@ export class ProjectRepository {
     }
 
     @catchAsyncExceptions()
-    async findProjectById(id: ProjectId, userId?: UserId): Promise<Result<Project>> {
+    async findById(id: ProjectId, extra: { userId?: UserId, statusGroup?: ProjectStatusEnum[] } = {}): Promise<Result<Project>> {
         let searchConditions: any = { id: id.getValue() };
+        const { userId, statusGroup } = extra;
 
         if( valueIsNotEmpty( userId ) ) {
-            searchConditions = { ...searchConditions, members: { id: userId.getValue() } };
+            searchConditions = {
+                ...searchConditions,
+                members: {
+                    user: { id: userId.getValue() }
+                }
+            };
+        }
+
+        if( valueIsNotEmpty( statusGroup ) ) {
+            searchConditions = {
+                ...searchConditions,
+                timeline: {
+                    status: In( statusGroup )
+                }
+            };
         }
 
         const result = await this.repository.findOne( { where: searchConditions } );
@@ -70,40 +109,30 @@ export class ProjectRepository {
     }
 
     @catchAsyncExceptions()
-    async findActiveProjectById(id: ProjectId): Promise<Result<Project>> {
-        const result = await this.repository.findOne( {
-                                                          where: {
-                                                              id    : id.getValue(),
-                                                              status: In( GroupedProjectStatuses.active )
-                                                          }
-                                                      }
-        );
-        return valueIsNotEmpty( result )
-               ? Project.fromEntity( result )
-               : NotFound();
-    }
-
-    @catchAsyncExceptions()
-    async findOngoingProjectById(id: ProjectId): Promise<Result<Project>> {
-        const result = await this.repository.findOne( {
-                                                          where: {
-                                                              id    : id.getValue(),
-                                                              status: In( GroupedProjectStatuses.ongoing )
-                                                          }
-                                                      }
-        );
-        return valueIsNotEmpty( result )
-               ? Project.fromEntity( result )
-               : NotFound();
-    }
-
-    @catchAsyncExceptions()
-    async saveProject(project: Project, externalTransaction?: EntityManager): Promise<Result<Project>> {
+    async save(project: Project, externalTransaction?: EntityManager): Promise<Result<Project>> {
         const entity = project.toEntity();
         const savedEntity = valueIsEmpty( externalTransaction )
                             ? await this.repository.save( entity )
                             : await externalTransaction.save( entity );
 
         return Project.fromEntity( savedEntity );
+    }
+
+    @catchAsyncExceptions()
+    async saveAll(projects: Project[], externalTransaction?: EntityManager): Promise<Result<Project[]>> {
+        const entities = projects.map( p => p.toEntity() );
+        const savedEntities = valueIsEmpty( externalTransaction )
+                              ? await this.repository.save( entities )
+                              : await externalTransaction.save( entities );
+
+        return Result.aggregateResults( ...savedEntities.map( entity => Project.fromEntity( entity ) ) );
+    }
+
+    @catchAsyncExceptions()
+    async delete(project: Project, externalTransaction?: EntityManager): Promise<void> {
+        const entity = project.toEntity();
+        valueIsEmpty( externalTransaction )
+        ? await this.repository.remove( entity )
+        : await externalTransaction.remove( entity );
     }
 }

@@ -1,5 +1,6 @@
+import { SwaggerTagsEnum } from '@configuration/enums/swagger-tags.enum';
 import { Body, Controller, Headers, HttpCode, HttpStatus, Post, Request } from '@nestjs/common';
-import { ApiHeader } from '@nestjs/swagger';
+import { ApiHeader, ApiTags } from '@nestjs/swagger';
 import { NoAuth } from '@security/decorators/no-auth.decorator';
 import { LoginResponseDto } from '@security/dtos/login-response.dto';
 import { LoginWithCredentialsDto } from '@security/dtos/login-with-credentials.dto';
@@ -10,6 +11,7 @@ import { BaseController } from '@shared/models/generics/base-controller';
 
 @Controller( 'auth' )
 @ApiHeader( { name: CustomHttpHeaders.CorrelationId.header } )
+@ApiTags( SwaggerTagsEnum.Auth )
 export class AuthController extends BaseController {
     constructor(
         private readonly authService: AuthService

@@ -1,5 +1,6 @@
 import { Failed, Success } from '@shared/functions/result-builder.functions';
 import { valueIsEmpty } from '@shared/functions/value-is-empty.function';
+import { valueIsNotEmpty } from '@shared/functions/value-is-not-empty.function';
 import { IValueObject } from '@shared/interfaces/generics/value-object.interface';
 import { Result } from '@shared/models/generics/result';
 import { ValidationChain } from '@shared/models/validation/validation-chain';
@@ -15,7 +16,7 @@ export class OptionalWorkLogDescription implements IValueObject<OptionalWorkLogD
         return new OptionalWorkLogDescription();
     }
 
-    static create(value: string | null | undefined, propertyName: string): Result<OptionalWorkLogDescription> {
+    static create(value: string | null | undefined, propertyName: string = 'description'): Result<OptionalWorkLogDescription> {
         if( valueIsEmpty( value ) ) {
             return Success( this.empty() );
         }
@@ -40,7 +41,18 @@ export class OptionalWorkLogDescription implements IValueObject<OptionalWorkLogD
         return this.value === to.getValue();
     }
 
+    isSet(): boolean {
+        return valueIsNotEmpty( this.value );
+    }
+
     update(value: string | null | undefined, propertyName: string): Result<OptionalWorkLogDescription> {
         return OptionalWorkLogDescription.create( value, propertyName );
+    }
+
+    append(value: string | null): Result<OptionalWorkLogDescription> {
+        const newValue = this.isSet()
+                         ? `${ this.value }\n${ value ?? '' }`
+                         : value;
+        return OptionalWorkLogDescription.create( newValue );
     }
 }

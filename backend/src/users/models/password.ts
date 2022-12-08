@@ -50,4 +50,8 @@ export class Password implements IValueObject<Password, string> {
     matches(rawPassword: string): boolean {
         return bcrypt.compareSync( rawPassword, this.value );
     }
+
+    update(rawPassword: string, propertyName = 'password'): Result<Password> {
+        return Password.hash( rawPassword, propertyName );
+    }
 }

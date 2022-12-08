@@ -3,8 +3,11 @@ import { CompanyModule } from '@company/company.module';
 import { ConfigurationModule } from '@configuration/configuration.module';
 import { POSTGRES_DATABASE } from '@configuration/constants/database.constants';
 import { ConfigurationService } from '@configuration/services/configuration.service';
+import { DocumentsModule } from '@documents/documents.module';
 import { EmailModule } from '@email/email.module';
-import { Module } from '@nestjs/common';
+import { FilesModule } from '@files/files.module';
+import { FiscalModule } from '@fiscal/fiscal.module';
+import { Logger, Module, OnModuleInit } from '@nestjs/common';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmCoreModule } from '@nestjs/typeorm/dist/typeorm-core.module';
@@ -13,9 +16,16 @@ import { SearchModule } from '@search/search.module';
 import { SecurityModule } from '@security/security.module';
 import { GlobalExceptionFilter } from '@shared/filters/global-exception.filter';
 import { HttpHeadersInterceptor } from '@shared/interceptors/http-headers.interceptor';
+import { InternalContext } from '@shared/models/context/internal-context';
 import { SharedModule } from '@shared/shared.module';
 import { UserModule } from '@users/user.module';
+import { HolidayService } from '@vacations/services/holiday.service';
+import { VacationsModule } from '@vacations/vacations.module';
 import { WorkLogModule } from '@work-logs/work-log.module';
+import dayjs from 'dayjs';
+//@ts-ignore
+import dayjsBusinessDays from 'dayjs-business-days';
+import { DataSource } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 
 @Module( {
@@ -26,6 +36,9 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
                  TypeOrmCoreModule.forRootAsync( {
                                                      useFactory: (configurationService: ConfigurationService) => (
                                                          {
+                                                             verboseRetryLog    : true,
+                                                             logging            : [ 'info', 'migration' ],
+                                                             logNotifications   : true,
                                                              applicationName    : configurationService.appName,
                                                              type               : POSTGRES_DATABASE,
                                                              host               : configurationService.dbHost,
@@ -36,11 +49,26 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
                                                              schema             : configurationService.dbSchema,
                                                              synchronize        : configurationService.dbSync,
                                                              entities           : [ `${ __dirname }/**/*.entity{.ts,.js}` ],
-                                                             migrations         : [ `${ __dirname }/migrations/*{.ts,.js}` ],
+                                                             migrations         : [ `${ __dirname }/migrations/*.{js, ts}` ],
                                                              migrationsTableName: configurationService.migrationsTable,
                                                              autoLoadEntities   : true,
                                                              cache              : true,
-                                                             namingStrategy     : new SnakeNamingStrategy()
+                                                             namingStrategy     : new SnakeNamingStrategy(),
+                                                             ssl                : configurationService.dbEnableSSL
+                                                                                  ? {
+                                                                     checkServerIdentity: (servername: any, cert: any) => {
+                                                                         if( cert.subject.CN.indexOf( 'altamira-hub-db' ) >= 0 || cert.subject.CN === 'pg-server' ) {
+                                                                             return undefined;
+                                                                         }
+
+                                                                         return new Error( `checkServerIdentity failed. CN: ${ cert.subject.CN } is not expected` );
+                                                                     },
+                                                                     // rejectUnauthorized: false,
+                                                                     ca  : configurationService.dbServerCA,
+                                                                     cert: configurationService?.dbClientCert,
+                                                                     key : configurationService?.dbClientKey
+                                                                 }
+                                                                                  : undefined
                                                          }
                                                      ),
                                                      imports   : [ ConfigurationModule ],
@@ -55,7 +83,11 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
                  ProjectModule,
                  ClientModule,
                  WorkLogModule,
-                 SearchModule
+                 SearchModule,
+                 VacationsModule,
+                 FiscalModule,
+                 DocumentsModule,
+                 FilesModule
              ],
              providers: [
                  {
@@ -68,5 +100,26 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
                  }
              ]
          } )
-export class AppModule {
+export class AppModule implements OnModuleInit {
+    private readonly logger = new Logger( AppModule.name );
+
+    constructor(
+        private readonly dataSource: DataSource,
+        private readonly configurationService: ConfigurationService,
+        private readonly holidayService: HolidayService
+    ) {
+    }
+
+    async onModuleInit(): Promise<any> {
+        await this.dataSource.runMigrations();
+
+        if( this.configurationService.refreshHolidaysOnStartup ) {
+            setTimeout( async () => {
+                const holidays = await this.holidayService.refreshHolidays( new InternalContext() );
+                this.logger.log( `${ holidays.length } holidays refreshed` );
+            }, 3000 );
+        }
+
+        dayjs.extend( dayjsBusinessDays );
+    }
 }

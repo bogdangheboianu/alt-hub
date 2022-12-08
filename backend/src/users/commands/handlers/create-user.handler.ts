@@ -1,7 +1,8 @@
 import { CompanyPositionNotFoundException } from '@company/exceptions/company-position.exceptions';
-import { CompanyPosition } from '@company/models/position/company-position';
-import { CompanyPositionId } from '@company/models/position/company-position-id';
+import { CompanyPosition } from '@company/models/company-position';
+import { CompanyPositionId } from '@company/models/company-position-id';
 import { CompanyPositionRepository } from '@company/repositories/company-position.repository';
+import { FiscalService } from '@fiscal/services/fiscal.service';
 import { CommandHandler, EventBus } from '@nestjs/cqrs';
 import { Exception } from '@shared/exceptions/exception';
 import { Failed, Success } from '@shared/functions/result-builder.functions';
@@ -21,7 +22,8 @@ export class CreateUserHandler extends BaseSyncCommandHandler<CreateUserCommand,
     constructor(
         private readonly eventBus: EventBus,
         private readonly userRepository: UserRepository,
-        private readonly companyPositionRepository: CompanyPositionRepository
+        private readonly companyPositionRepository: CompanyPositionRepository,
+        private readonly fiscalService: FiscalService
     ) {
         super();
     }
@@ -47,6 +49,8 @@ export class CreateUserHandler extends BaseSyncCommandHandler<CreateUserCommand,
         }
 
         const savedUser = await this.saveUserToDb( user.value! );
+
+        await this.createAnnualEmployeeSheet( command, savedUser );
 
         return this.successful( command, savedUser );
     }
@@ -108,7 +112,7 @@ export class CreateUserHandler extends BaseSyncCommandHandler<CreateUserCommand,
     }
 
     private async checkForEmailAddressUniqueness(user: User): Promise<Result<any>> {
-        const userByEmail = await this.userRepository.findByEmail( user.personalInfo.email );
+        const userByEmail = await this.userRepository.findByEmail( user.account.email );
 
         if( userByEmail.isFailed ) {
             throw new Exception( userByEmail.errors );
@@ -164,7 +168,7 @@ export class CreateUserHandler extends BaseSyncCommandHandler<CreateUserCommand,
     }
 
     private async getCompanyPositionById(command: CreateUserCommand): Promise<Result<CompanyPosition>> {
-        const { employeeInfo: { companyPositionId } } = command.data.payload;
+        const { employmentInfo: { companyPositionId } } = command.data.payload;
         const id = CompanyPositionId.create( companyPositionId, 'companyPositionId' );
 
         if( id.isFailed ) {
@@ -192,5 +196,10 @@ export class CreateUserHandler extends BaseSyncCommandHandler<CreateUserCommand,
         }
 
         return savedUser.value!;
+    }
+
+    private async createAnnualEmployeeSheet(command: CreateUserCommand, user: User): Promise<void> {
+        const { context, payload: { employmentInfo: { paidLeaveDays } } } = command.data;
+        await this.fiscalService.createAnnualEmployeeSheet( context, { userId: user.id.getValue(), paidLeaveDays } );
     }
 }

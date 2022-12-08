@@ -5,11 +5,10 @@ import { ClientName } from '@clients/models/value-objects/client-name';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { catchAsyncExceptions } from '@shared/decorators/catch-async-exceptions.decorator';
-import { Exception } from '@shared/exceptions/exception';
 import { NotFound } from '@shared/functions/result-builder.functions';
 import { valueIsEmpty } from '@shared/functions/value-is-empty.function';
 import { Result } from '@shared/models/generics/result';
-import { EntityManager, Repository } from 'typeorm';
+import { EntityManager, In, Repository } from 'typeorm';
 
 @Injectable()
 export class ClientRepository {
@@ -19,7 +18,7 @@ export class ClientRepository {
     }
 
     @catchAsyncExceptions()
-    async findAllClients(): Promise<Result<Client[]>> {
+    async findAll(): Promise<Result<Client[]>> {
         const results = await this.repository.find();
         return valueIsEmpty( results )
                ? NotFound()
@@ -27,7 +26,19 @@ export class ClientRepository {
     }
 
     @catchAsyncExceptions()
-    async findClientByName(name: ClientName): Promise<Result<Client>> {
+    async findAllByIdList(idList: ClientId[]): Promise<Result<Client[]>> {
+        const results = await this.repository.find( {
+                                                        where: {
+                                                            id: In( idList.map( id => id.getValue() ) )
+                                                        }
+                                                    } );
+        return valueIsEmpty( results )
+               ? NotFound()
+               : Result.aggregateResults( ...results.map( r => Client.fromEntity( r ) ) );
+    }
+
+    @catchAsyncExceptions()
+    async findByName(name: ClientName): Promise<Result<Client>> {
         const result = await this.repository.findOne( {
                                                           where: {
                                                               name: name.getValue()
@@ -39,7 +50,7 @@ export class ClientRepository {
     }
 
     @catchAsyncExceptions()
-    async findClientById(id: ClientId): Promise<Result<Client>> {
+    async findById(id: ClientId): Promise<Result<Client>> {
         const result = await this.repository.findOne( {
                                                           where: {
                                                               id: id.getValue()
@@ -51,17 +62,20 @@ export class ClientRepository {
     }
 
     @catchAsyncExceptions()
-    async saveClient(client: Client, externalTransaction?: EntityManager): Promise<Client> {
+    async save(client: Client, externalTransaction?: EntityManager): Promise<Result<Client>> {
         const entity = client.toEntity();
         const savedEntity = valueIsEmpty( externalTransaction )
                             ? await this.repository.save( entity )
                             : await externalTransaction!.save( entity );
-        const savedClient = Client.fromEntity( savedEntity );
 
-        if( savedClient.isFailed ) {
-            throw new Exception( savedClient.errors );
-        }
+        return Client.fromEntity( savedEntity );
+    }
 
-        return savedClient.value!;
+    @catchAsyncExceptions()
+    async delete(client: Client, externalTransaction?: EntityManager): Promise<void> {
+        const entity = client.toEntity();
+        valueIsEmpty( externalTransaction )
+        ? await this.repository.remove( entity )
+        : await externalTransaction.remove( entity );
     }
 }

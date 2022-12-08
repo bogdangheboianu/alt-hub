@@ -19,7 +19,7 @@ export class ProjectName implements IValueObject<ProjectName, string> {
             return Failed( ...validation.errors );
         }
 
-        return Success( new ProjectName( value ) );
+        return Success( new ProjectName( value.trim() ) );
     }
 
     getValue(): string {
@@ -27,6 +27,11 @@ export class ProjectName implements IValueObject<ProjectName, string> {
     }
 
     equals(to: ProjectName): boolean {
-        return this.value === to.getValue();
+        return this.value.toLowerCase() === to.getValue()
+                                              .toLowerCase();
+    }
+
+    update(value: string): Result<ProjectName> {
+        return ProjectName.create( value );
     }
 }

@@ -1,24 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from '@auth/guards/auth.guard';
-import { NotAuthGuard } from '@auth/guards/not-auth.guard';
-import { PublicLayoutComponent } from '@layout/public-layout/public-layout.component';
-import { SecureLayoutComponent } from '@layout/secure-layout/secure-layout.component';
-import { PUBLIC_ROUTES } from '@layout/routes/public.routes';
-import { SECURE_ROUTES } from '@layout/routes/secure.routes';
+import { AuthGuard } from '@config/guards/auth.guard';
+import { NotAuthGuard } from '@config/guards/not-auth.guard';
 
 const routes: Routes = [
     {
-        path       : '',
-        component  : PublicLayoutComponent,
-        children   : PUBLIC_ROUTES,
-        canActivate: [ NotAuthGuard ]
+        path        : '',
+        loadChildren: () => import('@layouts/public/public.module').then( m => m.PublicModule ),
+        canActivate : [ NotAuthGuard ]
     },
     {
-        path       : '',
-        component  : SecureLayoutComponent,
-        children   : SECURE_ROUTES,
-        canActivate: [ AuthGuard ]
+        path        : '',
+        loadChildren: () => import('@layouts/secure/secure.module').then( m => m.SecureModule ),
+        canActivate : [ AuthGuard ]
+    },
+    {
+        path        : '**',
+        loadChildren: () => import('@not-found/not-found.module').then( m => m.NotFoundModule ),
+        pathMatch   : 'full'
     }
 ];
 

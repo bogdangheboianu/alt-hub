@@ -59,3 +59,24 @@ table.mat-table > tbody > .mat-row.warn {
 .mat-icon {
   width: auto !important;
 }
+
+.mat-menu-item .mat-icon {
+  margin-right: 5px !important;
+}
+
+.mat-menu-content:not(:empty) {
+  padding: 0 !important;
+}
+
+.mat-menu-panel {
+  min-height: auto !important;
+}
+
+.mat-calendar-body-cell.selected {
+  background: #2196F3 !important;
+  border-radius: 50% !important;
+}
+
+.drop-calendar {
+  width: 30rem !important;
+}

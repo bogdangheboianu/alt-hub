@@ -71,7 +71,7 @@ export class UpdateClientHandler extends BaseSyncCommandHandler<UpdateClientComm
             return Failed( ...clientName.errors );
         }
 
-        const client = await this.clientRepository.findClientByName( clientName.value! );
+        const client = await this.clientRepository.findByName( clientName.value! );
 
         if( client.isFailed ) {
             throw new Exception( client.errors );
@@ -91,7 +91,7 @@ export class UpdateClientHandler extends BaseSyncCommandHandler<UpdateClientComm
             return Failed( ...clientId.errors );
         }
 
-        const data = await this.clientRepository.findClientById( clientId.value! );
+        const data = await this.clientRepository.findById( clientId.value! );
 
         if( data.isFailed ) {
             throw new Exception( data.errors );
@@ -105,6 +105,12 @@ export class UpdateClientHandler extends BaseSyncCommandHandler<UpdateClientComm
     }
 
     private async saveClientToDb(client: Client): Promise<Client> {
-        return await this.clientRepository.saveClient( client );
+        const savedClient = await this.clientRepository.save( client );
+
+        if( savedClient.isFailed ) {
+            throw new Exception( savedClient.errors );
+        }
+
+        return savedClient.value!;
     }
 }

@@ -1,5 +1,4 @@
 import { CommandHandler, EventBus } from '@nestjs/cqrs';
-import { ProjectNotFoundException } from '@projects/exceptions/project.exceptions';
 import { Exception } from '@shared/exceptions/exception';
 import { Failed, Success } from '@shared/functions/result-builder.functions';
 import { IException } from '@shared/interfaces/generics/exception.interface';
@@ -8,6 +7,7 @@ import { Result } from '@shared/models/generics/result';
 import { UpdateWorkLogRecurrenceCommand } from '@work-logs/commands/impl/update-work-log-recurrence.command';
 import { FailedToCreateWorkLogRecurrenceEvent } from '@work-logs/events/impl/failed-to-create-work-log-recurrence.event';
 import { WorkLogRecurrenceCreatedEvent } from '@work-logs/events/impl/work-log-recurrence-created.event';
+import { WorkLogRecurrenceNotFoundException } from '@work-logs/exceptions/work-log.exceptions';
 import { WorkLogRecurrence } from '@work-logs/models/work-log-recurrence';
 import { WorkLogRecurrenceId } from '@work-logs/models/work-log-recurrence-id';
 import { WorkLogRecurrenceRepository } from '@work-logs/repositories/work-log-recurrence.repository';
@@ -72,13 +72,19 @@ export class UpdateWorkLogRecurrenceHandler extends BaseSyncCommandHandler<Updat
         }
 
         if( recurrence.isNotFound ) {
-            return Failed( new ProjectNotFoundException() );
+            return Failed( new WorkLogRecurrenceNotFoundException() );
         }
 
         return recurrence;
     }
 
     private async saveWorkLogRecurrenceToDb(workLogRecurrence: WorkLogRecurrence): Promise<WorkLogRecurrence> {
-        return await this.workLogRecurrenceRepository.save( workLogRecurrence );
+        const savedRecurrence = await this.workLogRecurrenceRepository.save( workLogRecurrence );
+
+        if( savedRecurrence.isFailed ) {
+            throw new Exception( savedRecurrence.errors );
+        }
+
+        return savedRecurrence.value!;
     }
 }

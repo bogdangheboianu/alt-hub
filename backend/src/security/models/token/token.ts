@@ -108,16 +108,22 @@ export class Token implements IDomainModel<Token, TokenEntity> {
     }
 
     isNotActive(): boolean {
-        return !(
-            this.status.hasValueActive() &&
-            this.generatedAt
-                .add( this.validForMinutes.getValue(), 'minutes' )
-                .isFutureDate()
-        );
+        const hasActiveStatus = this.status.hasValueActive();
+        const hasExpired = this.hasValidity()
+                           ? this.generatedAt
+                                 .add( this.validForMinutes.getValue(), 'minutes' )
+                                 .isPastDate()
+                           : false;
+
+        return !hasActiveStatus || hasExpired;
     }
 
     isActive(): boolean {
         return !this.isNotActive();
+    }
+
+    hasValidity(): boolean {
+        return this.validForMinutes.isSet();
     }
 
     invalidate(nonActiveStatus: TokenStatusEnum): Result<Token> {

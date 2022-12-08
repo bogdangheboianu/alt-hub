@@ -1,7 +1,6 @@
 import { SendInviteEmailCommand } from '@email/commands/impl/send-invite-email.command';
 import { CommandBus, CommandHandler, EventBus } from '@nestjs/cqrs';
 import { GenerateTokenCommand } from '@security/commands/impl/token/generate-token.command';
-import { ACCOUNT_CONFIRMATION_TOKEN_VALIDITY_MIN } from '@security/constants/token.constants';
 import { TokenPurposeEnum } from '@security/enums/token/token-purpose.enum';
 import { TokenValueGenerator } from '@security/generators/token-value.generator';
 import { Token } from '@security/models/token/token';
@@ -41,7 +40,7 @@ export class InviteUserHandler extends BaseSyncCommandHandler<InviteUserCommand,
             return this.successful( command, user );
         }
 
-        const updatedUser = await user.updateAsInvited( command );
+        const updatedUser = await user.invite( command );
 
         if( updatedUser.isFailed ) {
             return this.failed( command, ...updatedUser.errors );
@@ -107,11 +106,10 @@ export class InviteUserHandler extends BaseSyncCommandHandler<InviteUserCommand,
         const generateTokenCommand = new GenerateTokenCommand( {
                                                                    context: command.data.context,
                                                                    payload: {
-                                                                       value          : TokenValueGenerator.generateAccountConfirmationTokenValue()
-                                                                                                           .getValue(),
-                                                                       purpose        : TokenPurposeEnum.AccountConfirmation,
-                                                                       validForMinutes: ACCOUNT_CONFIRMATION_TOKEN_VALIDITY_MIN,
-                                                                       user           : forUser
+                                                                       value  : TokenValueGenerator.generateAccountConfirmationTokenValue()
+                                                                                                   .getValue(),
+                                                                       purpose: TokenPurposeEnum.AccountActivation,
+                                                                       user   : forUser
                                                                    }
                                                                } );
         return await this.commandBus.execute( generateTokenCommand );
@@ -122,7 +120,7 @@ export class InviteUserHandler extends BaseSyncCommandHandler<InviteUserCommand,
                                                                        context: command.data.context,
                                                                        payload: {
                                                                            userRecipient,
-                                                                           accountConfirmationToken
+                                                                           accountActivationToken: accountConfirmationToken
                                                                        }
                                                                    } );
         return await this.commandBus.execute( sendInviteEmailCommand );

@@ -1,6 +1,6 @@
 import { CompanyPositionEntity } from '@company/entities/company-position.entity';
-import { CompanyPosition } from '@company/models/position/company-position';
-import { CompanyPositionId } from '@company/models/position/company-position-id';
+import { CompanyPosition } from '@company/models/company-position';
+import { CompanyPositionId } from '@company/models/company-position-id';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { catchAsyncExceptions } from '@shared/decorators/catch-async-exceptions.decorator';

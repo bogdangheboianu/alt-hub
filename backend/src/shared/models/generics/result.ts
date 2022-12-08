@@ -1,3 +1,4 @@
+import { Success } from '@shared/functions/result-builder.functions';
 import { valueIsEmpty } from '@shared/functions/value-is-empty.function';
 import { valueIsNotEmpty } from '@shared/functions/value-is-not-empty.function';
 import { IException } from '@shared/interfaces/generics/exception.interface';
@@ -48,6 +49,10 @@ export class Result<T> {
     }
 
     static aggregateResults<T>(...results: Result<T>[]): Result<T[]> {
+        if( valueIsEmpty( results ) ) {
+            return Success( [] );
+        }
+
         const values: T[] = [];
         let errors: IException[] = [];
 
@@ -70,7 +75,7 @@ export class Result<T> {
             return this.failed( ...errors );
         }
 
-        return this.success( values );
+        return this.success( values ?? [] );
     }
 
     static aggregateObjects<T>(...objects: { [key in keyof T]?: Result<any> | any }[]): Result<T> {

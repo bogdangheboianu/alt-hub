@@ -1,10 +1,12 @@
 {
-  "extends": "./tsconfig.json",
-  "exclude": [
+  "extends" : "./tsconfig.json",
+  "exclude" : [
     "node_modules",
     "test",
     "dist",
     "**/*spec.ts",
-    "ormconfig.ts"
+    "ormconfig.example.ts",
+    "ormconfig.ts",
+    "scratch.ts"
   ]
 }

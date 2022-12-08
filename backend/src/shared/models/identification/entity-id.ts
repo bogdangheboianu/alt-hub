@@ -30,6 +30,10 @@ export class EntityId implements IValueObject<EntityId, string> {
         return Success( new EntityId( value ) );
     }
 
+    update(value: string, propertyName = 'id'): Result<EntityId> {
+        return EntityId.create( value, propertyName );
+    }
+
     getValue(): string {
         return this.value;
     }

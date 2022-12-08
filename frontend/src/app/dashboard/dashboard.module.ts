@@ -1,27 +1,23 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
-import { RouterModule } from '@angular/router';
+import { AuthDataModule } from '@auth/data/auth-data.module';
 import { DashboardRoutingModule } from '@dashboard/dashboard-routing.module';
-import { DashboardPageComponent } from '@dashboard/pages/dashboard-page/dashboard-page.component';
-import { SharedModule } from '@shared/shared.module';
-import { QuickActionCardsComponent } from './components/quick-action-cards/quick-action-cards.component';
+import { DashboardComponent } from '@dashboard/dashboard.component';
+import { QuickActionCardComponent } from '@shared/ui/quick-action-card.component';
+import { WorkLogDataModule } from '@work-logs/data/work-log-data.module';
 
 @NgModule( {
-               declarations: [
-                   DashboardPageComponent,
-                   QuickActionCardsComponent
-               ],
-               imports: [
+               imports     : [
                    CommonModule,
                    DashboardRoutingModule,
                    MatDividerModule,
-                   SharedModule,
-                   MatIconModule
+                   QuickActionCardComponent,
+                   AuthDataModule,
+                   WorkLogDataModule
                ],
-               exports     : [
-                   RouterModule
+               declarations: [
+                   DashboardComponent
                ]
            } )
 export class DashboardModule {

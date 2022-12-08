@@ -22,6 +22,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
         const errorResponsePayload = exception instanceof HttpException
                                      ? this.transformHttpException( exception )
                                      : this.transformOtherException();
+        this.logger.error( exception );
         this.logger.error( `${ method } ${ url }`, stringify.stable( errorResponsePayload ) );
 
         return response.status( errorResponsePayload.statusCode )

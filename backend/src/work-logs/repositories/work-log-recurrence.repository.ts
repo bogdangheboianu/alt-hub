@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { catchAsyncExceptions } from '@shared/decorators/catch-async-exceptions.decorator';
-import { Exception } from '@shared/exceptions/exception';
 import { NotFound } from '@shared/functions/result-builder.functions';
 import { valueIsEmpty } from '@shared/functions/value-is-empty.function';
 import { Result } from '@shared/models/generics/result';
@@ -65,17 +64,20 @@ export class WorkLogRecurrenceRepository {
     }
 
     @catchAsyncExceptions()
-    async save(recurrence: WorkLogRecurrence, externalTransaction?: EntityManager): Promise<WorkLogRecurrence> {
+    async save(recurrence: WorkLogRecurrence, externalTransaction?: EntityManager): Promise<Result<WorkLogRecurrence>> {
         const entity = recurrence.toEntity();
         const savedEntity = valueIsEmpty( externalTransaction )
                             ? await this.repository.save( entity )
                             : await externalTransaction.save( entity );
-        const savedRecurrence = WorkLogRecurrence.fromEntity( savedEntity );
 
-        if( savedRecurrence.isFailed ) {
-            throw new Exception( savedRecurrence.errors );
-        }
+        return WorkLogRecurrence.fromEntity( savedEntity );
+    }
 
-        return savedRecurrence.value!;
+    @catchAsyncExceptions()
+    async delete(recurrence: WorkLogRecurrence, externalTransaction?: EntityManager): Promise<void> {
+        const entity = recurrence.toEntity();
+        valueIsEmpty( externalTransaction )
+        ? await this.repository.remove( entity )
+        : await externalTransaction.remove( entity );
     }
 }

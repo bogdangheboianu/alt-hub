@@ -31,11 +31,10 @@ export class TokenRepository {
     }
 
     @catchAsyncExceptions()
-    async findActiveTokenByValueAndPurpose(value: TokenValue, purpose: TokenPurpose): Promise<Result<Token>> {
+    async findTokenByValueAndPurpose(value: TokenValue, purpose: TokenPurpose): Promise<Result<Token>> {
         const result = await this.repository.findOne( {
                                                           where: {
                                                               value  : value.getValue(),
-                                                              status : TokenStatusEnum.Active,
                                                               purpose: purpose.getValue()
                                                           }
                                                       } );

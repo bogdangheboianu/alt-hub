@@ -2,11 +2,16 @@ import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectModule } from '@projects/project.module';
+import { UserModule } from '@users/user.module';
+import { VacationsModule } from '@vacations/vacations.module';
 import { ActivateWorkLogRecurrenceHandler } from '@work-logs/commands/handlers/activate-work-log-recurrence.handler';
 import { CreateWorkLogRecurrenceHandler } from '@work-logs/commands/handlers/create-work-log-recurrence.handler';
-import { CreateWorkLogHandler } from '@work-logs/commands/handlers/create-work-log.handler';
+import { CreateWorkLogsHandler } from '@work-logs/commands/handlers/create-work-logs.handler';
 import { DeactivateWorkLogRecurrenceHandler } from '@work-logs/commands/handlers/deactivate-work-log-recurrence.handler';
+import { DeleteWorkLogRecurrenceHandler } from '@work-logs/commands/handlers/delete-work-log-recurrence.handler';
+import { DeleteWorkLogHandler } from '@work-logs/commands/handlers/delete-work-log.handler';
 import { HandleRecurrentWorkLogsHandler } from '@work-logs/commands/handlers/handle-recurrent-work-logs.handler';
+import { ImportWorkLogsFromFileHandler } from '@work-logs/commands/handlers/import-work-logs-from-file.handler';
 import { UpdateWorkLogRecurrenceHandler } from '@work-logs/commands/handlers/update-work-log-recurrence.handler';
 import { UpdateWorkLogHandler } from '@work-logs/commands/handlers/update-work-log.handler';
 import { WorkLogController } from '@work-logs/controllers/work-log.controller';
@@ -41,13 +46,16 @@ const Controllers = [
 ];
 
 const CommandHandlers = [
-    CreateWorkLogHandler,
+    CreateWorkLogsHandler,
     CreateWorkLogRecurrenceHandler,
     HandleRecurrentWorkLogsHandler,
     UpdateWorkLogHandler,
     UpdateWorkLogRecurrenceHandler,
     ActivateWorkLogRecurrenceHandler,
-    DeactivateWorkLogRecurrenceHandler
+    DeactivateWorkLogRecurrenceHandler,
+    ImportWorkLogsFromFileHandler,
+    DeleteWorkLogHandler,
+    DeleteWorkLogRecurrenceHandler
 ];
 
 const QueryHandlers = [
@@ -64,7 +72,9 @@ const Schedulers = [
              imports    : [
                  TypeOrmModule.forFeature( [ ...Entities ] ),
                  CqrsModule,
-                 ProjectModule
+                 ProjectModule,
+                 UserModule,
+                 VacationsModule
              ],
              controllers: [ ...Controllers ],
              providers  : [

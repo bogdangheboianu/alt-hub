@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AuditDto } from '@dtos/audit.dto';
-import { readableDate } from '@shared/functions/readable-date.function';
-import { valueIsEmpty } from '@shared/functions/value-is-empty.function';
+import { AuditDto } from '@dtos/audit-dto';
+import { readableDate } from '@shared/config/functions/date.functions';
+import { valueIsEmpty } from '@shared/config/functions/value.functions';
 
 @Pipe( { name: 'createdAt', pure: true } )
 export class CreatedAtPipe implements PipeTransform {

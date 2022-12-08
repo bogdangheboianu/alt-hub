@@ -15,8 +15,8 @@ export class TokenPurpose implements IValueObject<TokenPurpose, TokenPurposeEnum
         return new TokenPurpose( TokenPurposeEnum.Authentication );
     }
 
-    static forAccountConfirmation(): TokenPurpose {
-        return new TokenPurpose( TokenPurposeEnum.AccountConfirmation );
+    static forAccountActivation(): TokenPurpose {
+        return new TokenPurpose( TokenPurposeEnum.AccountActivation );
     }
 
     static create(value: string | TokenPurposeEnum): Result<TokenPurpose> {

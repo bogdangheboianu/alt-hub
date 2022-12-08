@@ -13,16 +13,22 @@ export class WorkLogEntity extends BaseEntity {
     @Column( { type: ColTypesEnum.Int } )
     minutesLogged!: number;
 
-    @Column( { type: ColTypesEnum.Date } )
+    @Column( { type: ColTypesEnum.TimestampWithTimezone } )
     date!: Date;
 
-    @ManyToOne( () => UserEntity, { eager: true } )
+    @ManyToOne( () => UserEntity, { eager: true, nullable: true, onDelete: 'SET NULL' } )
     @JoinColumn( { name: 'user_id', referencedColumnName: 'id' } )
-    user!: UserEntity;
+    user!: UserEntity | null;
 
-    @ManyToOne( () => ProjectEntity, { eager: true } )
+    @Column( { type: ColTypesEnum.Varchar, nullable: true } )
+    userFullName!: string;
+
+    @ManyToOne( () => ProjectEntity, { eager: true, nullable: true, onDelete: 'SET NULL' } )
     @JoinColumn( { name: 'project_id', referencedColumnName: 'id' } )
-    project!: ProjectEntity;
+    project!: ProjectEntity | null;
+
+    @Column( { type: ColTypesEnum.Varchar, nullable: true } )
+    projectName!: string;
 
     @ManyToOne( () => WorkLogRecurrenceEntity, { eager: true, nullable: true } )
     @JoinColumn( { name: 'work_log_recurrence_id', referencedColumnName: 'id' } )

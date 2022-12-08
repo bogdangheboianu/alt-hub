@@ -4,4 +4,4 @@ export type EmailOptions<TemplateContext> = NonNullable<Pick<ISendMailOptions, '
                                                                                'subject' |
                                                                                'template'>> & { context: TemplateContext };
 
-export type EmailData<TemplateContext> = Pick<EmailOptions<TemplateContext>, 'to' | 'context'>;
+export type EmailData<TemplateContext = {}> = Pick<EmailOptions<TemplateContext>, 'to' | 'context'> & Pick<ISendMailOptions, 'attachments'>;

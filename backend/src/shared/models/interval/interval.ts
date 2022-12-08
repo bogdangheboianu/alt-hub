@@ -12,14 +12,14 @@ export class Interval<T> {
         this._to = to;
     }
 
-    static validate<T>(from: IntervalPoint<T>, to: IntervalPoint<T>, fromPropertyName = 'from', toPropertyName = 'to', allowEmpty = false): Result<any> {
+    static validate<T>(from: IntervalPoint<T>, to: IntervalPoint<T>, fromPropertyName = 'from', toPropertyName = 'to', allowEmpty = false, allowSameValues = false): Result<any> {
         const intervalIsEmpty = from.isNotSet() && to.isNotSet();
 
         if( intervalIsEmpty && !allowEmpty ) {
             return Failed( new UndefinedIntervalException( fromPropertyName, toPropertyName ) );
         }
 
-        if( !intervalIsEmpty && !allowEmpty && !from.isBefore( to ) ) {
+        if( !intervalIsEmpty && !allowEmpty && !allowSameValues && !from.isBefore( to ) ) {
             return Failed( new InvalidIntervalException( fromPropertyName, toPropertyName ) );
         }
 

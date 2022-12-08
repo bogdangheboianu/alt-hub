@@ -9,7 +9,7 @@ const IsAdminGuard = (): Type<CanActivate> => {
                                    .getRequest();
             const user: User = request.user;
 
-            return user?.isAdmin && user.isActive();
+            return user?.account.isAdmin && user.isActive();
         }
     }
 

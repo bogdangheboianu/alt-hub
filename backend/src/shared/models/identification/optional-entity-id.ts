@@ -1,5 +1,6 @@
 import { Failed, Success } from '@shared/functions/result-builder.functions';
 import { valueIsEmpty } from '@shared/functions/value-is-empty.function';
+import { valueIsNotEmpty } from '@shared/functions/value-is-not-empty.function';
 import { IValueObject } from '@shared/interfaces/generics/value-object.interface';
 import { Result } from '@shared/models/generics/result';
 import { EntityId } from '@shared/models/identification/entity-id';
@@ -41,5 +42,9 @@ export class OptionalEntityId implements IValueObject<OptionalEntityId, string |
 
     equals(to: OptionalEntityId | EntityId): boolean {
         return this.value === to.getValue();
+    }
+
+    isSet(): boolean {
+        return valueIsNotEmpty( this.value );
     }
 }

@@ -12,7 +12,10 @@ export const modelToCsvWorkLogDto = (model: CsvWorkLog): CsvWorkLogDto => (
         hoursLogged : model.getValue()
                            .hoursLogged
                            .getValue(),
-        userFullName: model.getValue().userFullName.joined
+        userFullName: model.getValue().userFullName.joined,
+        description: model.getValue()
+                          .description
+                          ?.getValue() ?? null
     }
 );
 

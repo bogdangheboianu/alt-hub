@@ -10,6 +10,7 @@ import { UserStatusEnum } from '@users/enums/user-status.enum';
 import { IUsersSelectionCriteria } from '@users/interfaces/users-selection-criteria.interface';
 import { EmailAddress } from '@users/models/email-address';
 import { EmployeeId } from '@users/models/employee-id';
+import { FullName } from '@users/models/full-name';
 import { PhoneNumber } from '@users/models/phone-number';
 import { SocialSecurityNumber } from '@users/models/social-security-number';
 import { User } from '@users/models/user';
@@ -24,7 +25,7 @@ export class UserRepository {
     @catchAsyncExceptions()
     async findByEmail(email: EmailAddress, excludeUserId?: UserId): Promise<Result<User>> {
         let searchConditions: any = {
-            personalInfo: {
+            account: {
                 email: email.getValue()
             }
         };
@@ -82,7 +83,7 @@ export class UserRepository {
     async findByEmployeeId(employeeId: EmployeeId): Promise<Result<User>> {
         const result = await this.repository.findOne( {
                                                           where: {
-                                                              employeeInfo: {
+                                                              employmentInfo: {
                                                                   employeeId: employeeId.getValue()
                                                               }
                                                           }
@@ -108,8 +109,10 @@ export class UserRepository {
     async findActiveById(id: UserId): Promise<Result<User>> {
         const result = await this.repository.findOne( {
                                                           where: {
-                                                              id    : id.getValue(),
-                                                              status: UserStatusEnum.Active
+                                                              id     : id.getValue(),
+                                                              account: {
+                                                                  status: UserStatusEnum.Active
+                                                              }
                                                           }
                                                       } );
         return valueIsEmpty( result )
@@ -123,16 +126,61 @@ export class UserRepository {
             return NotFound();
         }
 
+        emailOrUsername = emailOrUsername.trim()
+                                         .toLowerCase();
+        const result = await this.repository.findOne( {
+                                                          where: [
+                                                              {
+                                                                  account: {
+                                                                      email : emailOrUsername,
+                                                                      status: UserStatusEnum.Active
+                                                                  }
+                                                              },
+                                                              {
+                                                                  account: {
+                                                                      username: emailOrUsername,
+                                                                      status  : UserStatusEnum.Active
+                                                                  }
+                                                              }
+                                                          ]
+                                                      } );
+        return valueIsEmpty( result )
+               ? NotFound()
+               : User.fromEntity( result! );
+    }
+
+    @catchAsyncExceptions()
+    async findByFullName(fullName: FullName): Promise<Result<User>> {
         const result = await this.repository.findOne( {
                                                           where: [
                                                               {
                                                                   personalInfo: {
-                                                                      email: emailOrUsername
-                                                                  },
-                                                                  status      : UserStatusEnum.Active
+                                                                      firstName: fullName.firstName,
+                                                                      lastName : fullName.lastName
+                                                                  }
                                                               },
-                                                              { username: emailOrUsername, status: UserStatusEnum.Active }
+                                                              {
+                                                                  personalInfo: {
+                                                                      firstName: fullName.lastName,
+                                                                      lastName : fullName.firstName
+                                                                  }
+                                                              }
                                                           ]
+                                                      } );
+        return valueIsEmpty( result )
+               ? NotFound()
+               : User.fromEntity( result! );
+    }
+
+    @catchAsyncExceptions()
+    async findInactiveById(id: UserId): Promise<Result<User>> {
+        const result = await this.repository.findOne( {
+                                                          where: {
+                                                              id     : id.getValue(),
+                                                              account: {
+                                                                  status: UserStatusEnum.Inactive
+                                                              }
+                                                          }
                                                       } );
         return valueIsEmpty( result )
                ? NotFound()
@@ -144,16 +192,21 @@ export class UserRepository {
         let searchConditions: any = {};
 
         if( valueIsNotEmpty( selectionCriteria ) ) {
-            const { statuses: userStatuses } = selectionCriteria;
+            const { statuses } = selectionCriteria;
 
-            if( valueIsNotEmpty( userStatuses ) ) {
-                const user_statuses = userStatuses.map( status => status.getValue() );
-                searchConditions = { ...searchConditions, status: In( user_statuses ) };
+            if( valueIsNotEmpty( statuses ) ) {
+                const user_statuses = statuses.map( status => status.getValue() );
+                searchConditions = { ...searchConditions, account: { status: In( user_statuses ) } };
             }
         }
 
         const results = await this.repository.find( {
-                                                        where: searchConditions
+                                                        where: searchConditions,
+                                                        order: {
+                                                            employmentInfo: {
+                                                                hiredOn: 'ASC'
+                                                            }
+                                                        }
                                                     } );
         return valueIsEmpty( results )
                ? NotFound()
@@ -164,8 +217,10 @@ export class UserRepository {
     async findAllActiveByIdList(ids: UserId[]): Promise<Result<User[]>> {
         const results = await this.repository.find( {
                                                         where: {
-                                                            id    : In( ids.map( id => id.getValue() ) ),
-                                                            status: UserStatusEnum.Active
+                                                            id     : In( ids.map( id => id.getValue() ) ),
+                                                            account: {
+                                                                status: UserStatusEnum.Active
+                                                            }
                                                         }
                                                     } );
         return valueIsEmpty( results )

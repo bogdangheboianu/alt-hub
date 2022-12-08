@@ -1,6 +1,6 @@
 import { isNil } from 'lodash';
 
-export function entityFactory<T>(entityType: new (...args: any[]) => T, data: T): T {
+export function entityFactory<T extends object>(entityType: new (...args: any[]) => T, data: T): T {
     if( isNil( entityType ) || isNil( data ) ) {
         throw new Error( 'Invalid arguments provided for entityFactory' );
     }

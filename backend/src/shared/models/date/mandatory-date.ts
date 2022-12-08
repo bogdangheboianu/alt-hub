@@ -46,7 +46,7 @@ export class MandatoryDate extends BaseDate<MandatoryDate> implements IntervalPo
 
         return new MandatoryDate( newValue );
     }
-    
+
     update(value: Date, propertyName: string): Result<MandatoryDate> {
         return MandatoryDate.create( value, propertyName );
     }

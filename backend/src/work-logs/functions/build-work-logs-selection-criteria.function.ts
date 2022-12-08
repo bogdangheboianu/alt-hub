@@ -1,3 +1,4 @@
+import { ClientId } from '@clients/models/value-objects/client-id';
 import { ProjectId } from '@projects/models/project-id';
 import { Success } from '@shared/functions/result-builder.functions';
 import { valueIsEmpty } from '@shared/functions/value-is-empty.function';
@@ -10,7 +11,7 @@ import { GetPaginatedWorkLogsParamsDto } from '@work-logs/dtos/get-paginated-wor
 import { IWorkLogsSelectionCriteria } from '@work-logs/interfaces/work-logs-selection-criteria.interface';
 
 export const buildWorkLogsSelectionCriteria = (params: GetPaginatedWorkLogsParamsDto | GetAllCsvWorkLogsParamsDto, loggedUser: User): Result<IWorkLogsSelectionCriteria> => {
-    const { fromDate, toDate, userId, projectId } = params;
+    const { fromDate, toDate, userId, projectId, clientId } = params;
     return Result.aggregateObjects<IWorkLogsSelectionCriteria>(
         {
             fromDate: valueIsEmpty( fromDate )
@@ -23,7 +24,7 @@ export const buildWorkLogsSelectionCriteria = (params: GetPaginatedWorkLogsParam
                     : MandatoryDate.create( toDate, 'toDate' )
         },
         {
-            userId: loggedUser.isAdmin
+            userId: loggedUser.account.isAdmin
                     ? valueIsEmpty( userId )
                       ? Success( undefined )
                       : UserId.create( userId, 'userId' )
@@ -33,6 +34,11 @@ export const buildWorkLogsSelectionCriteria = (params: GetPaginatedWorkLogsParam
             projectId: valueIsEmpty( projectId )
                        ? Success( undefined )
                        : ProjectId.create( projectId, 'projectId' )
+        },
+        {
+            clientId: valueIsEmpty( clientId )
+                      ? Success( undefined )
+                      : ClientId.create( clientId, 'clientId' )
         }
     );
 };

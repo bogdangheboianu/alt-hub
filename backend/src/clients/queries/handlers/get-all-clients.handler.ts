@@ -35,7 +35,7 @@ export class GetAllClientsHandler extends BaseQueryHandler<GetAllClientsQuery, C
     }
 
     private async getAllClients(): Promise<Result<Client[]>> {
-        const clients = await this.clientRepository.findAllClients();
+        const clients = await this.clientRepository.findAll();
 
         if( clients.isFailed ) {
             throw new Exception( clients.errors );
